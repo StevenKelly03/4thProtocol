@@ -39,3 +39,29 @@
 
 # debug information files
 *.dwo
+
+# Visual Studio generated folders
+.vs/
+Debug/
+Release/
+x64/
+
+# Visual Studio state files
+*.vcxproj.user
+*.lastbuildstate
+*.recipe
+
+# Build logs
+*.tlog
+*.log
+
+# Intermediate database files
+*.idb
+*.ipdb
+*.iobj
+
+# CMake / MSBuild extras
+*.cache
+*.obj
+*.pch
+
