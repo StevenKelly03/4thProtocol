@@ -20,10 +20,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
+    <ClInclude Include="GameInput.hpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Pieces.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameAI.hpp" />
+    <ClInclude Include="GameMovement.hpp" />
+    <ClInclude Include="GameRules.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="ASSETS\IMAGES\SFML-LOGO.png">

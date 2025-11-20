@@ -1,8 +1,30 @@
 #include "Game.h"
+
+#include "GameInput.hpp"
+#include "GameMovement.hpp"
+#include "GameRules.hpp"
+#include "GameAI.hpp"
+
+#include <cmath>
 #include <iostream>
 
-Game::Game() :
-    window{ sf::VideoMode{ sf::Vector2u{2250U, 1250U}, 32U }, "The 4th Protocol" }, cellSize{ 250 }, gridCols{ 5 }, scale{ 4.f }, containerCols{ 2 }
+// ------------------------------------------------------
+// Core Game implementation
+// ------------------------------------------------------
+
+Game::Game()
+    : window(sf::VideoMode({ 2250u, 1250u }), "The 4th Protocol")
+    , font()
+    , displayedMessage(font, "", 40)      // SFML 3: Text must have a font
+    , cellSize(250.f)
+    , scale(4.f)
+    , gridCols(5)
+    , currentTurn(1)
+    , placementPhase(true)
+    , selectedPlayer(0)
+    , selectedPieceIndex(-1)
+    , containerCols(2)
+    , aiPlayer(2)
 {
     grid.resize(25);
     characterContainers.resize(10);
@@ -10,239 +32,230 @@ Game::Game() :
     player1Textures.resize(3);
     player2Textures.resize(3);
 
-    player1Sprites.clear();
-    player2Sprites.clear();
+    board.assign(25, nullptr);
 
     initGraphics();
-
-    for (int i = 0; i < 5; i++)
-    {
-        int texIndex = (i < 3) ? i : 2;
-
-        player1Sprites.emplace_back(player1Textures[texIndex]);
-        player2Sprites.emplace_back(player2Textures[texIndex]);
-
-        player1Sprites[i].setScale({ scale ,scale });
-        player2Sprites[i].setScale({ scale ,scale });
-
-        player1Sprites[i].setOrigin({ player1Sprites[i].getTexture().getSize().x / 2.f, player1Sprites[i].getTexture().getSize().y / 2.f });
-        player2Sprites[i].setOrigin({ player2Sprites[i].getTexture().getSize().x / 2.f, player2Sprites[i].getTexture().getSize().y / 2.f });
-    }
-
-    for (int i = 0; i < 5; i++)
-    {
-        int c = containerIndexMap[i];
-        player1Sprites[i].setPosition({ characterContainers[c].getPosition().x + 125.f, characterContainers[c].getPosition().y + 125.f });
-        player2Sprites[i].setPosition({ player1Sprites[i].getPosition().x + 250.f, characterContainers[i].getPosition().y + 125 });
-    }
-
-    placed1.resize(player1Sprites.size(), false);
-    placed2.resize(player2Sprites.size(), false);
-
-    currentTurn = 1;
+    initPieces();
 }
 
-Game::~Game()
-{
-}
+Game::~Game() = default;
 
 void Game::run()
 {
     sf::Clock clock;
-    sf::Time timeSinceLastUpdate = sf::Time::Zero;
-    const float fps{ 60.0f };
-    sf::Time timePerFrame = sf::seconds(1.0f / fps);
+    sf::Time accumulator;
+    sf::Time step = sf::seconds(1.f / 60.f);
+
     while (window.isOpen())
     {
+        accumulator += clock.restart();
         processEvents();
-        timeSinceLastUpdate += clock.restart();
-        while (timeSinceLastUpdate > timePerFrame)
+
+        while (accumulator > step)
         {
-            timeSinceLastUpdate -= timePerFrame;
+            accumulator -= step;
             processEvents();
-            update(timePerFrame);
+            update(step);
         }
+
         render();
+    }
+}
+
+void Game::initGraphics()
+{
+    window.setFramerateLimit(60);
+
+    if (!font.openFromFile("ASSETS/FONTS/Jersey20-Regular.ttf"))
+    {
+        std::cout << "Failed to open font\n";
+    }
+
+    // Grid 5x5
+    for (int i = 0; i < 25; ++i)
+    {
+        sf::RectangleShape cell;
+        cell.setSize({ cellSize - 4.f, cellSize - 4.f });
+        cell.setFillColor(sf::Color(200, 200, 200));
+        cell.setOutlineThickness(2.f);
+        cell.setOutlineColor(sf::Color::Black);
+
+        int r = i / gridCols;
+        int c = i % gridCols;
+
+        cell.setPosition({ c * cellSize + 2.f,
+                          r * cellSize + 2.f });
+
+        grid[i] = cell;
+    }
+
+    // Character containers (5 for P1, 5 for P2) on the right side
+    float boardWidth = gridCols * cellSize;
+    float panelX = boardWidth + 50.f;
+    float containerSize = 200.f;
+
+    for (int i = 0; i < 10; ++i)
+    {
+        sf::RectangleShape box;
+        box.setSize({ containerSize, containerSize });
+        box.setFillColor(sf::Color(80, 80, 80));
+        box.setOutlineThickness(2.f);
+        box.setOutlineColor(sf::Color::White);
+
+        int col = (i < 5) ? 0 : 1;
+        int row = (i < 5) ? i : i - 5;
+
+        box.setPosition({ panelX + col * (containerSize + 40.f),
+                         150.f + row * (containerSize + 20.f) });
+
+        characterContainers[i] = box;
+    }
+
+    // Message board
+    float boardWidthRight = gridCols * cellSize;
+    float msgPanelX = boardWidthRight + 50.f;
+
+    messageBoard.setSize({ 800.f, 120.f });
+    messageBoard.setFillColor(sf::Color(50, 50, 50));
+    messageBoard.setOutlineThickness(3.f);
+    messageBoard.setOutlineColor(sf::Color::White);
+    messageBoard.setPosition({ msgPanelX, 20.f });
+
+    displayedMessage.setFont(font);
+    displayedMessage.setCharacterSize(40);
+    displayedMessage.setFillColor(sf::Color::White);
+    displayedMessage.setString(player1Turn);
+    displayedMessage.setPosition(
+        messageBoard.getPosition() + sf::Vector2f{ 20.f, 35.f });
+}
+
+void Game::initPieces()
+{
+    // Load textures (Texture::loadFromFile is still valid in SFML 3) :contentReference[oaicite:3]{index=3}
+    for (int i = 0; i < 3; ++i)
+    {
+        if (!player1Textures[i].loadFromFile(player1Files[i]))
+            std::cout << "Failed to load " << player1Files[i] << "\n";
+        if (!player2Textures[i].loadFromFile(player2Files[i]))
+            std::cout << "Failed to load " << player2Files[i] << "\n";
+    }
+
+    auto makeP1Frog = [&]() { return std::make_unique<FrogPiece>(player1Textures[0], 1); };
+    auto makeP1Snake = [&]() { return std::make_unique<SnakePiece>(player1Textures[1], 1); };
+    auto makeP1Donkey = [&]() { return std::make_unique<DonkeyPiece>(player1Textures[2], 1); };
+
+    auto makeP2Frog = [&]() { return std::make_unique<FrogPiece>(player2Textures[0], 2); };
+    auto makeP2Snake = [&]() { return std::make_unique<SnakePiece>(player2Textures[1], 2); };
+    auto makeP2Donkey = [&]() { return std::make_unique<DonkeyPiece>(player2Textures[2], 2); };
+
+    // Simple set: 5 pieces each
+    player1Pieces.push_back(makeP1Frog());
+    player1Pieces.push_back(makeP1Snake());
+    player1Pieces.push_back(makeP1Donkey());
+    player1Pieces.push_back(makeP1Frog());
+    player1Pieces.push_back(makeP1Snake());
+
+    player2Pieces.push_back(makeP2Frog());
+    player2Pieces.push_back(makeP2Snake());
+    player2Pieces.push_back(makeP2Donkey());
+    player2Pieces.push_back(makeP2Frog());
+    player2Pieces.push_back(makeP2Snake());
+
+    // Place in containers
+    for (int i = 0; i < static_cast<int>(player1Pieces.size()) && i < 5; ++i)
+    {
+        sf::Sprite& s = player1Pieces[i]->getSprite();
+        auto bounds = s.getLocalBounds();
+
+        s.setOrigin({ bounds.size.x / 2.f, bounds.size.y / 2.f });
+
+        sf::Vector2f pos = characterContainers[i].getPosition();
+        sf::Vector2f size = characterContainers[i].getSize();
+
+        s.setPosition({ pos.x + size.x / 2.f,
+                       pos.y + size.y / 2.f });
+        s.setScale({ 0.7f, 0.7f });
+    }
+
+    for (int i = 0; i < static_cast<int>(player2Pieces.size()) && i < 5; ++i)
+    {
+        sf::Sprite& s = player2Pieces[i]->getSprite();
+        auto bounds = s.getLocalBounds();
+
+        s.setOrigin({ bounds.size.x / 2.f, bounds.size.y / 2.f });
+
+        sf::Vector2f pos = characterContainers[5 + i].getPosition();
+        sf::Vector2f size = characterContainers[5 + i].getSize();
+
+        s.setPosition({ pos.x + size.x / 2.f,
+                       pos.y + size.y / 2.f });
+        s.setScale({ 0.7f, 0.7f });
     }
 }
 
 void Game::processEvents()
 {
-    while (const std::optional newEvent = window.pollEvent())
+    while (const std::optional ev = window.pollEvent())
     {
-        if (newEvent->is<sf::Event::Closed>())
-        {
+        if (ev->is<sf::Event::Closed>())
             exitGame = true;
-        }
-        if (newEvent->is<sf::Event::KeyPressed>())
-        {
-            processKeys(newEvent);
-        }
-        if (newEvent->is<sf::Event::MouseButtonPressed>())
-        {
+
+        if (ev->is<sf::Event::KeyPressed>())
+            processKeys(ev);
+
+        if (ev->is<sf::Event::MouseButtonPressed>())
             processMouseClicks();
-        }
     }
 }
 
-void Game::processKeys(const std::optional<sf::Event> t_event)
+void Game::processKeys(const std::optional<sf::Event> ev)
 {
-    const sf::Event::KeyPressed* newKeypress = t_event->getIf<sf::Event::KeyPressed>();
-    if (sf::Keyboard::Key::Escape == newKeypress->code)
+    if (!ev) return;
+
+    if (const auto* key = ev->getIf<sf::Event::KeyPressed>())
     {
-        exitGame = true;
+        if (key->code == sf::Keyboard::Key::Escape)
+            exitGame = true;
     }
 }
 
-void Game::checkKeyboardState()
+void Game::update(sf::Time)
 {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape))
-    {
-        exitGame = true;
-    }
-}
-
-void Game::processMouseClicks()
-{
-    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-    sf::Vector2f p(mousePos.x, mousePos.y);
-
-    if (selectedSprite == -1)
-    {
-        if (currentTurn == 1)
-        {
-            for (int i = 0; i < player1Sprites.size(); i++)
-            {
-                if (!placed1[i] && player1Sprites[i].getGlobalBounds().contains(p))
-                {
-                    selectedSprite = i;
-                    return;
-                }
-            }
-        }
-        else
-        {
-            for (int i = 0; i < player2Sprites.size(); i++)
-            {
-                if (!placed2[i] && player2Sprites[i].getGlobalBounds().contains(p))
-                {
-                    selectedSprite = i + 1000;
-                    return;
-                }
-            }
-        }
-        return;
-    }
-
-    for (int i = 0; i < grid.size(); i++)
-    {
-        if (grid[i].getGlobalBounds().contains(p))
-        {
-            if (selectedSprite < 1000)
-            {
-                player1Sprites[selectedSprite].setPosition({ grid[i].getPosition().x + 125.f,grid[i].getPosition().y + 125.f });
-                placed1[selectedSprite] = true;
-                currentTurn = 2;
-                displayedMessage.setString(player2Turn);
-                displayedMessage.setOutlineColor(sf::Color::Red);
-            }
-            else
-            {
-                int r = selectedSprite - 1000;
-                player2Sprites[r].setPosition({ grid[i].getPosition().x + 125.f, grid[i].getPosition().y + 125.f });
-                placed2[r] = true;
-                currentTurn = 1;
-                displayedMessage.setString(player1Turn);
-                displayedMessage.setOutlineColor(sf::Color::Yellow);
-            }
-
-            selectedSprite = -1;
-            return;
-        }
-    }
-}
-
-void Game::update(sf::Time t_deltaTime)
-{
-    checkKeyboardState();
     if (exitGame)
-    {
         window.close();
-    }
+
+    if (gameOver)
+        return;
+
+    if (vsAI)
+        updateAI();
 }
 
 void Game::render()
 {
-    window.clear(sf::Color::White);
+    window.clear(sf::Color(30, 30, 30));
 
-    for (int i = 0; i < grid.size(); i++)
-    {
-        window.draw(grid[i]);
-    }
+    // Board
+    for (auto& cell : grid)
+        window.draw(cell);
 
-    for (int i = 0; i < characterContainers.size(); i++)
-    {
-        window.draw(characterContainers[i]);
-    }
+    // Move highlights
+    for (auto& h : moveHighlights)
+        window.draw(h);
 
-    for (int i = 0; i < player1Sprites.size(); i++)
-    {
-        window.draw(player1Sprites[i]);
-    }
+    // Piece containers
+    for (auto& box : characterContainers)
+        window.draw(box);
 
-    for (int i = 0; i < player2Sprites.size(); i++)
-    {
-        window.draw(player2Sprites[i]);
-    }
+    // Pieces
+    for (auto& p : player1Pieces)
+        window.draw(p->getSprite());
+    for (auto& p : player2Pieces)
+        window.draw(p->getSprite());
 
+    // Message board
     window.draw(messageBoard);
     window.draw(displayedMessage);
+
     window.display();
-}
-
-void Game::initGraphics()
-{
-    font.openFromFile("ASSETS\\FONTS\\Jersey20-Regular.ttf");
-
-    for (int i = 0; i < grid.size(); i++)
-    {
-        int col = i % gridCols;
-        int row = i / gridCols;
-
-        grid[i].setSize({ cellSize,cellSize });
-        grid[i].setFillColor(sf::Color::Transparent);
-        grid[i].setOutlineColor(sf::Color::Black);
-        grid[i].setOutlineThickness(-2.5f);
-        grid[i].setPosition({ col * cellSize + 500.f, row * cellSize });
-    }
-
-    for (int i = 0; i < characterContainers.size(); i++)
-    {
-        int col = i % containerCols;
-        int row = i % 5;
-
-        characterContainers[i].setSize({ cellSize,cellSize });
-        characterContainers[i].setFillColor(sf::Color::Transparent);
-        characterContainers[i].setOutlineColor(sf::Color{ 0, 255, 255 });
-        characterContainers[i].setOutlineThickness(-2.5f);
-        characterContainers[i].setPosition({ col * cellSize, row * cellSize });
-    }
-
-    for (int i = 0; i < 3; i++)
-    {
-        player1Textures[i].loadFromFile(player1Files[i]);
-        player2Textures[i].loadFromFile(player2Files[i]);
-    }
-
-    messageBoard.setSize({ 500, 1250 });
-    messageBoard.setFillColor(sf::Color{ 0,0,0,175 });
-    messageBoard.setPosition({ 1751, 0 });
-
-    displayedMessage.setFont(font);
-    displayedMessage.setCharacterSize(45.f);
-    displayedMessage.setFillColor(sf::Color::White);
-    displayedMessage.setOutlineColor(sf::Color::Red);
-    displayedMessage.setOutlineThickness(-1.f);
-    displayedMessage.setPosition({ 1760, 10 });
-    displayedMessage.setString(player1Turn);
 }
