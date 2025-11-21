@@ -13,13 +13,14 @@ void Game::processMouseClicks()
         return;
 
     sf::Vector2i mp = sf::Mouse::getPosition(window);
-    sf::Vector2f p(static_cast<float>(mp.x), static_cast<float>(mp.y));
+    sf::Vector2f p = window.mapPixelToCoords(mp);
 
     if (placementPhase)
         handlePlacementClick(p);
     else
         handleMovementClick(p);
 }
+
 
 // ------------------------------------------------------------
 // Placement phase

@@ -8,10 +8,6 @@
 #include <cmath>
 #include <iostream>
 
-// ------------------------------------------------------
-// Core Game implementation
-// ------------------------------------------------------
-
 Game::Game()
     : window(sf::VideoMode({ 2250u, 1250u }), "The 4th Protocol")
     , font()
@@ -131,7 +127,7 @@ void Game::initGraphics()
 
 void Game::initPieces()
 {
-    // Load textures (Texture::loadFromFile is still valid in SFML 3) :contentReference[oaicite:3]{index=3}
+    // Load textures
     for (int i = 0; i < 3; ++i)
     {
         if (!player1Textures[i].loadFromFile(player1Files[i]))
@@ -148,7 +144,7 @@ void Game::initPieces()
     auto makeP2Snake = [&]() { return std::make_unique<SnakePiece>(player2Textures[1], 2); };
     auto makeP2Donkey = [&]() { return std::make_unique<DonkeyPiece>(player2Textures[2], 2); };
 
-    // Simple set: 5 pieces each
+    // 5 pieces each
     player1Pieces.push_back(makeP1Frog());
     player1Pieces.push_back(makeP1Snake());
     player1Pieces.push_back(makeP1Donkey());
@@ -161,36 +157,41 @@ void Game::initPieces()
     player2Pieces.push_back(makeP2Frog());
     player2Pieces.push_back(makeP2Snake());
 
-    // Place in containers
+    const float scale = 2.f;
+
     for (int i = 0; i < static_cast<int>(player1Pieces.size()) && i < 5; ++i)
     {
         sf::Sprite& s = player1Pieces[i]->getSprite();
-        auto bounds = s.getLocalBounds();
 
-        s.setOrigin({ bounds.size.x / 2.f, bounds.size.y / 2.f });
+        s.setOrigin({ s.getTexture().getSize().x / 2.f, s.getTexture().getSize().y / 2.f });
+        s.setScale({ scale, scale });
 
-        sf::Vector2f pos = characterContainers[i].getPosition();
-        sf::Vector2f size = characterContainers[i].getSize();
+        sf::Vector2f boxPos = characterContainers[i].getPosition();
+        sf::Vector2f boxSize = characterContainers[i].getSize();
 
-        s.setPosition({ pos.x + size.x / 2.f,
-                       pos.y + size.y / 2.f });
-        s.setScale({ 0.7f, 0.7f });
+        float x = boxPos.x + boxSize.x * 0.5f;
+        float y = boxPos.y + boxSize.y * 0.5f;
+
+        s.setPosition({ x, y });
     }
 
+    // Player 2 containers
     for (int i = 0; i < static_cast<int>(player2Pieces.size()) && i < 5; ++i)
     {
         sf::Sprite& s = player2Pieces[i]->getSprite();
-        auto bounds = s.getLocalBounds();
 
-        s.setOrigin({ bounds.size.x / 2.f, bounds.size.y / 2.f });
+        s.setOrigin({ s.getTexture().getSize().x / 2.f, s.getTexture().getSize().y / 2.f });
+        s.setScale({ scale, scale });
 
-        sf::Vector2f pos = characterContainers[5 + i].getPosition();
-        sf::Vector2f size = characterContainers[5 + i].getSize();
+        sf::Vector2f boxPos = characterContainers[5 + i].getPosition();
+        sf::Vector2f boxSize = characterContainers[5 + i].getSize();
 
-        s.setPosition({ pos.x + size.x / 2.f,
-                       pos.y + size.y / 2.f });
-        s.setScale({ 0.7f, 0.7f });
+        float x = boxPos.x + boxSize.x * 0.5f;
+        float y = boxPos.y + boxSize.y * 0.5f;
+
+        s.setPosition({ x, y });
     }
+
 }
 
 void Game::processEvents()
