@@ -21,7 +21,6 @@ void Game::processMouseClicks()
         handleMovementClick(p);
 }
 
-
 // ------------------------------------------------------------
 // Placement phase
 // ------------------------------------------------------------
@@ -58,12 +57,11 @@ void Game::handlePlacementClick(const sf::Vector2f& p)
                 return;
 
             Piece* piece = pieces[selectedPieceIndex].get();
-
             sf::Vector2f cellPos = grid[i].getPosition();
-            sf::Sprite& s = piece->getSprite();
 
+            sf::Sprite& s = piece->getSprite();
             s.setPosition({ cellPos.x + cellSize / 2.f,
-                           cellPos.y + cellSize / 2.f });
+                            cellPos.y + cellSize / 2.f });
 
             piece->setPlaced(true);
             board[i] = piece;
@@ -122,17 +120,16 @@ void Game::handleMovementClick(const sf::Vector2f& p)
     {
         if (moveHighlights[h].getGlobalBounds().contains(p))
         {
-            int dest = moveHighlightIndices[h];
-
+            int   dest = moveHighlightIndices[h];
             Piece* piece = pieces[selectedPieceIndex].get();
-            int from = getGridIndexAtPosition(piece->getSprite().getPosition());
+            int   from = getGridIndexAtPosition(piece->getSprite().getPosition());
 
             board[from] = nullptr;
 
             sf::Vector2f cellPos = grid[dest].getPosition();
             piece->getSprite().setPosition(
                 { cellPos.x + cellSize / 2.f,
-                 cellPos.y + cellSize / 2.f });
+                  cellPos.y + cellSize / 2.f });
 
             board[dest] = piece;
 

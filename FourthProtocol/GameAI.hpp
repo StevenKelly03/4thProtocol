@@ -104,7 +104,7 @@ void Game::aiMakeMove()
     for (int i = 0; i < static_cast<int>(moves.size()); ++i)
     {
         applyMoveToBoardOnly(moves[i].from, moves[i].to);
-        int score = minimax(0, MAX_DEPTH, false, aiPlayer);
+        int score = minimax(0, MAX_DEPTH, false, aiPlayer, -1000000, 1000000);
         undoMoveOnBoardOnly(moves[i].from, moves[i].to);
 
         if (score > bestScore)
@@ -170,67 +170,95 @@ int Game::evaluateLine(int a, int b, int c, int d, int aiPlayer) const
 int Game::evaluateBoard(int aiPlayer) const
 {
     int score = 0;
+    int opponent = (aiPlayer == 1 ? 2 : 1);
 
-    // Horizontal lines
-    for (int r = 0; r < 5; ++r)
-    {
-        for (int c = 0; c <= 1; ++c)
+    // --- Piece type values ---
+    auto pieceValue = [&](Piece* p)
         {
-            int a = r * gridCols + c;
-            int b = r * gridCols + (c + 1);
-            int cIx = r * gridCols + (c + 2);
-            int d = r * gridCols + (c + 3);
-            score += evaluateLine(a, b, cIx, d, aiPlayer);
+            if (!p) return 0;
+            switch (p->getType())
+            {
+            case PieceType::Frog:   return 15;
+            case PieceType::Snake:  return 10;
+            case PieceType::Donkey: return 3;
+            }
+            return 0;
+        };
+
+    // --- Center control values ---
+    const int centerSquares[5] = { 6, 7, 8, 11, 12 };
+
+    // --- Mobility: number of available moves ---
+    std::vector<Move> aiMoves, oppMoves;
+    generateAllMoves(aiPlayer, aiMoves);
+    generateAllMoves(opponent, oppMoves);
+
+    score += aiMoves.size() * 2;
+    score -= oppMoves.size() * 2;
+
+    // --- Piece values & center control ---
+    for (int i = 0; i < 25; i++)
+    {
+        Piece* p = board[i];
+        if (!p) continue;
+
+        int base = pieceValue(p);
+
+        if (p->getOwner() == aiPlayer)
+        {
+            score += base;
+
+            // center bonus
+            for (int c : centerSquares)
+                if (i == c)
+                    score += 3;
+        }
+        else
+        {
+            score -= base;
+
+            for (int c : centerSquares)
+                if (i == c)
+                    score -= 3;
         }
     }
 
-    // Vertical lines
-    for (int c = 0; c < 5; ++c)
-    {
-        for (int r = 0; r <= 1; ++r)
+    // ---- Advanced line scoring (4-in-a-row windows) ----
+    auto scoreLine = [&](int a, int b, int c, int d)
         {
-            int a = r * gridCols + c;
-            int b = (r + 1) * gridCols + c;
-            int cIx = (r + 2) * gridCols + c;
-            int d = (r + 3) * gridCols + c;
-            score += evaluateLine(a, b, cIx, d, aiPlayer);
-        }
-    }
+            return evaluateLine(a, b, c, d, aiPlayer);
+        };
 
-    // Diagonal down-right
-    for (int r = 0; r <= 1; ++r)
-    {
-        for (int c = 0; c <= 1; ++c)
-        {
-            int a = r * gridCols + c;
-            int b = (r + 1) * gridCols + (c + 1);
-            int cIx = (r + 2) * gridCols + (c + 2);
-            int d = (r + 3) * gridCols + (c + 3);
-            score += evaluateLine(a, b, cIx, d, aiPlayer);
-        }
-    }
+    // horizontal
+    for (int r = 0; r < 5; r++)
+        for (int c = 0; c <= 1; c++)
+            score += scoreLine(r * 5 + c, r * 5 + c + 1, r * 5 + c + 2, r * 5 + c + 3);
 
-    // Diagonal up-right
-    for (int r = 3; r < 5; ++r)
-    {
-        for (int c = 0; c <= 1; ++c)
-        {
-            int a = r * gridCols + c;
-            int b = (r - 1) * gridCols + (c + 1);
-            int cIx = (r - 2) * gridCols + (c + 2);
-            int d = (r - 3) * gridCols + (c + 3);
-            score += evaluateLine(a, b, cIx, d, aiPlayer);
-        }
-    }
+    // vertical
+    for (int c = 0; c < 5; c++)
+        for (int r = 0; r <= 1; r++)
+            score += scoreLine(r * 5 + c, (r + 1) * 5 + c, (r + 2) * 5 + c, (r + 3) * 5 + c);
+
+    // diag down-right
+    for (int r = 0; r <= 1; r++)
+        for (int c = 0; c <= 1; c++)
+            score += scoreLine(r * 5 + c, (r + 1) * 5 + c + 1, (r + 2) * 5 + c + 2, (r + 3) * 5 + c + 3);
+
+    // diag up-right
+    for (int r = 3; r < 5; r++)
+        for (int c = 0; c <= 1; c++)
+            score += scoreLine(r * 5 + c, (r - 1) * 5 + c + 1, (r - 2) * 5 + c + 2, (r - 3) * 5 + c + 3);
 
     return score;
 }
+
 
 // ------------------------------------------------------------
 // Minimax
 // ------------------------------------------------------------
 
-int Game::minimax(int depth, int maxDepth, bool maximizingPlayer, int aiPlayer)
+int Game::minimax(int depth, int maxDepth, bool maximizingPlayer, int aiPlayer,
+    int alpha, int beta)
 {
     int winner = checkWinner();
     if (winner != 0)
@@ -255,29 +283,44 @@ int Game::minimax(int depth, int maxDepth, bool maximizingPlayer, int aiPlayer)
     if (maximizingPlayer)
     {
         int best = -1000000;
-        for (int i = 0; i < static_cast<int>(moves.size()); ++i)
+
+        for (auto& m : moves)
         {
-            applyMoveToBoardOnly(moves[i].from, moves[i].to);
-            int val = minimax(depth + 1, maxDepth, false, aiPlayer);
-            undoMoveOnBoardOnly(moves[i].from, moves[i].to);
-            if (val > best)
-                best = val;
+            applyMoveToBoardOnly(m.from, m.to);
+            int val = minimax(depth + 1, maxDepth, false, aiPlayer, alpha, beta);
+            undoMoveOnBoardOnly(m.from, m.to);
+
+            best = std::max(best, val);
+            alpha = std::max(alpha, best);
+
+            // PRUNE HERE
+            if (beta <= alpha)
+                break;
         }
+
         return best;
     }
     else
     {
         int best = 1000000;
-        for (int i = 0; i < static_cast<int>(moves.size()); ++i)
+
+        for (auto& m : moves)
         {
-            applyMoveToBoardOnly(moves[i].from, moves[i].to);
-            int val = minimax(depth + 1, maxDepth, true, aiPlayer);
-            undoMoveOnBoardOnly(moves[i].from, moves[i].to);
-            if (val < best)
-                best = val;
+            applyMoveToBoardOnly(m.from, m.to);
+            int val = minimax(depth + 1, maxDepth, true, aiPlayer, alpha, beta);
+            undoMoveOnBoardOnly(m.from, m.to);
+
+            best = std::min(best, val);
+            beta = std::min(beta, best);
+
+            // PRUNE HERE
+            if (beta <= alpha)
+                break;
         }
+
         return best;
     }
 }
+
 
 #endif // GAME_AI_HPP

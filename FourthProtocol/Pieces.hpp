@@ -17,6 +17,7 @@ Piece::Piece(PieceType type, const sf::Texture& texture, int owner)
 }
 
 // Frog
+
 FrogPiece::FrogPiece(const sf::Texture& tex, int owner)
     : Piece(PieceType::Frog, tex, owner)
 {
@@ -36,11 +37,11 @@ bool FrogPiece::canJump(const sf::Vector2i& f, const sf::Vector2i& t) const
 
     bool straight = (dx == 0 || dy == 0);
     bool diagonal = (std::abs(dx) == std::abs(dy));
-
     return straight || diagonal;
 }
 
 // Snake
+
 SnakePiece::SnakePiece(const sf::Texture& tex, int owner)
     : Piece(PieceType::Snake, tex, owner)
 {
@@ -54,6 +55,7 @@ bool SnakePiece::canMove(const sf::Vector2i& f, const sf::Vector2i& t) const
 }
 
 // Donkey
+
 DonkeyPiece::DonkeyPiece(const sf::Texture& tex, int owner)
     : Piece(PieceType::Donkey, tex, owner)
 {

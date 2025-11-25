@@ -7,10 +7,6 @@
 #include <memory>
 #include <optional>
 
-// ------------------------------------------------------
-// Piece hierarchy
-// ------------------------------------------------------
-
 enum class PieceType
 {
     Frog,
@@ -37,10 +33,10 @@ public:
     PieceType getType()  const { return m_type; }
 
 protected:
-    PieceType  m_type;
-    sf::Sprite m_sprite;
-    bool       m_placed;
-    int        m_owner;
+    PieceType   m_type;
+    sf::Sprite  m_sprite;
+    bool        m_placed;
+    int         m_owner;
 };
 
 class FrogPiece : public Piece
@@ -65,19 +61,11 @@ public:
     bool canMove(const sf::Vector2i& from, const sf::Vector2i& to) const override;
 };
 
-// ------------------------------------------------------
-// Simple move struct for the AI
-// ------------------------------------------------------
-
 struct Move
 {
     int from;
     int to;
 };
-
-// ------------------------------------------------------
-// Game class
-// ------------------------------------------------------
 
 class Game
 {
@@ -88,50 +76,47 @@ public:
     void run();
 
 private:
-    // Core / main loop stuff (in Game.cpp)
     void initGraphics();
     void initPieces();
     void processEvents();
-    void processKeys(const std::optional<sf::Event> ev);
+    void processKeys(const std::optional<sf::Event>& ev);
     void update(sf::Time dt);
     void render();
 
-    // ------------ input (GameInput.hpp) ------------
     void processMouseClicks();
     void handlePlacementClick(const sf::Vector2f& p);
     void handleMovementClick(const sf::Vector2f& p);
 
-    // ------------ movement helpers (GameMovement.hpp) ------------
     int  getGridIndexAtPosition(const sf::Vector2f& p);
     void generateMoveHighlights(int index, bool p1);
     void clearMoveHighlights();
     bool frogJump(int index, bool p1, const sf::Vector2f& dest);
 
-    // board-only helpers used by both movement + AI
     bool canFrogJumpBoard(int fromIdx, int toIdx) const;
     void generateAllMoves(int player, std::vector<Move>& moves) const;
     void applyMoveToBoardOnly(int from, int to);
     void undoMoveOnBoardOnly(int from, int to);
     void applyMoveToGame(int from, int to);
 
-    // ------------ AI (GameAI.hpp) ------------
     void updateAI();
-    void aiPlacePiece();
+    void aiPlacePiece();      // updated for strategic placement
     void aiMakeMove();
-    int  minimax(int depth, int maxDepth, bool maximizingPlayer, int aiPlayer);
-    int  evaluateBoard(int aiPlayer) const;
-    int  evaluateLine(int a, int b, int c, int d, int aiPlayer) const;
 
-    // ------------ rules / end game (GameRules.hpp) ------------
+    // Updated for alpha-beta pruning
+    int minimax(int depth, int maxDepth, bool maximizingPlayer,
+        int aiPlayer, int alpha, int beta);
+
+    int evaluateBoard(int aiPlayer) const;
+    int evaluateLine(int a, int b, int c, int d, int aiPlayer) const;
+
     int  checkWinner() const;
     bool isBoardFull() const;
     void checkGameOver();
 
 private:
     sf::RenderWindow window;
-
-    sf::Font font;
-    sf::Text displayedMessage;       // must be constructed with font (see Game ctor)
+    sf::Font         font;
+    sf::Text         displayedMessage;
 
     std::string player1Turn = "It's Player 1's Turn! (Yellow)";
     std::string player2Turn = "It's Player 2's Turn! (Red / AI)";
@@ -148,6 +133,7 @@ private:
         "ASSETS/IMAGES/Yellow/Snake.png",
         "ASSETS/IMAGES/Yellow/Donkey.png"
     };
+
     std::string player2Files[3] =
     {
         "ASSETS/IMAGES/Red/Frog.png",
@@ -165,7 +151,7 @@ private:
     std::vector<std::unique_ptr<Piece>> player1Pieces;
     std::vector<std::unique_ptr<Piece>> player2Pieces;
 
-    std::vector<Piece*> board;  // 25 entries, nullptr if empty
+    std::vector<Piece*> board;
 
     int  currentTurn;
     bool placementPhase;
@@ -178,8 +164,7 @@ private:
 
     int  containerCols;
     bool exitGame = false;
-
-    bool vsAI = true;  // AI = player 2
+    bool vsAI = true;
     int  aiPlayer;
     bool gameOver = false;
 };

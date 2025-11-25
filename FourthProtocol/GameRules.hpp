@@ -14,15 +14,16 @@ int Game::checkWinner() const
     {
         for (int c = 0; c <= 1; ++c)
         {
-            int idx0 = r * gridCols + c;
+            int    idx0 = r * gridCols + c;
             Piece* p0 = board[idx0];
             if (!p0) continue;
-            int owner = p0->getOwner();
 
+            int  owner = p0->getOwner();
             bool line = true;
+
             for (int k = 1; k < 4; ++k)
             {
-                int idx = r * gridCols + (c + k);
+                int    idx = r * gridCols + (c + k);
                 Piece* p = board[idx];
                 if (!p || p->getOwner() != owner)
                 {
@@ -40,15 +41,16 @@ int Game::checkWinner() const
     {
         for (int r = 0; r <= 1; ++r)
         {
-            int idx0 = r * gridCols + c;
+            int    idx0 = r * gridCols + c;
             Piece* p0 = board[idx0];
             if (!p0) continue;
-            int owner = p0->getOwner();
 
+            int  owner = p0->getOwner();
             bool line = true;
+
             for (int k = 1; k < 4; ++k)
             {
-                int idx = (r + k) * gridCols + c;
+                int    idx = (r + k) * gridCols + c;
                 Piece* p = board[idx];
                 if (!p || p->getOwner() != owner)
                 {
@@ -66,15 +68,16 @@ int Game::checkWinner() const
     {
         for (int c = 0; c <= 1; ++c)
         {
-            int idx0 = r * gridCols + c;
+            int    idx0 = r * gridCols + c;
             Piece* p0 = board[idx0];
             if (!p0) continue;
-            int owner = p0->getOwner();
 
+            int  owner = p0->getOwner();
             bool line = true;
+
             for (int k = 1; k < 4; ++k)
             {
-                int idx = (r + k) * gridCols + (c + k);
+                int    idx = (r + k) * gridCols + (c + k);
                 Piece* p = board[idx];
                 if (!p || p->getOwner() != owner)
                 {
@@ -92,15 +95,16 @@ int Game::checkWinner() const
     {
         for (int c = 0; c <= 1; ++c)
         {
-            int idx0 = r * gridCols + c;
+            int    idx0 = r * gridCols + c;
             Piece* p0 = board[idx0];
             if (!p0) continue;
-            int owner = p0->getOwner();
 
+            int  owner = p0->getOwner();
             bool line = true;
+
             for (int k = 1; k < 4; ++k)
             {
-                int idx = (r - k) * gridCols + (c + k);
+                int    idx = (r - k) * gridCols + (c + k);
                 Piece* p = board[idx];
                 if (!p || p->getOwner() != owner)
                 {

@@ -4,14 +4,15 @@
 #include "GameMovement.hpp"
 #include "GameRules.hpp"
 #include "GameAI.hpp"
-
 #include <cmath>
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 
 Game::Game()
     : window(sf::VideoMode({ 2250u, 1250u }), "The 4th Protocol")
     , font()
-    , displayedMessage(font, "", 40)      // SFML 3: Text must have a font
+    , displayedMessage(font, "", 40)
     , cellSize(250.f)
     , scale(4.f)
     , gridCols(5)
@@ -22,6 +23,8 @@ Game::Game()
     , containerCols(2)
     , aiPlayer(2)
 {
+    std::srand(static_cast<unsigned>(std::time(nullptr)));
+
     grid.resize(25);
     characterContainers.resize(10);
 
@@ -67,7 +70,6 @@ void Game::initGraphics()
         std::cout << "Failed to open font\n";
     }
 
-    // Grid 5x5
     for (int i = 0; i < 25; ++i)
     {
         sf::RectangleShape cell;
@@ -85,7 +87,6 @@ void Game::initGraphics()
         grid[i] = cell;
     }
 
-    // Character containers (5 for P1, 5 for P2) on the right side
     float boardWidth = gridCols * cellSize;
     float panelX = boardWidth + 50.f;
     float containerSize = 200.f;
@@ -107,7 +108,6 @@ void Game::initGraphics()
         characterContainers[i] = box;
     }
 
-    // Message board
     float boardWidthRight = gridCols * cellSize;
     float msgPanelX = boardWidthRight + 50.f;
 
@@ -127,71 +127,53 @@ void Game::initGraphics()
 
 void Game::initPieces()
 {
-    // Load textures
     for (int i = 0; i < 3; ++i)
     {
-        if (!player1Textures[i].loadFromFile(player1Files[i]))
-            std::cout << "Failed to load " << player1Files[i] << "\n";
-        if (!player2Textures[i].loadFromFile(player2Files[i]))
-            std::cout << "Failed to load " << player2Files[i] << "\n";
+        player1Textures[i].loadFromFile(player1Files[i]);
+        player2Textures[i].loadFromFile(player2Files[i]);
     }
 
-    auto makeP1Frog = [&]() { return std::make_unique<FrogPiece>(player1Textures[0], 1); };
-    auto makeP1Snake = [&]() { return std::make_unique<SnakePiece>(player1Textures[1], 1); };
-    auto makeP1Donkey = [&]() { return std::make_unique<DonkeyPiece>(player1Textures[2], 1); };
+    // Revised to ensure correct piece counts and remove duplicates
+    player1Pieces.clear();
+    player2Pieces.clear();
 
-    auto makeP2Frog = [&]() { return std::make_unique<FrogPiece>(player2Textures[0], 2); };
-    auto makeP2Snake = [&]() { return std::make_unique<SnakePiece>(player2Textures[1], 2); };
-    auto makeP2Donkey = [&]() { return std::make_unique<DonkeyPiece>(player2Textures[2], 2); };
+    player1Pieces.push_back(std::make_unique<FrogPiece>(player1Textures[0], 1));
+    player1Pieces.push_back(std::make_unique<SnakePiece>(player1Textures[1], 1));
+    player1Pieces.push_back(std::make_unique<DonkeyPiece>(player1Textures[2], 1));
+    player1Pieces.push_back(std::make_unique<DonkeyPiece>(player1Textures[2], 1));
+    player1Pieces.push_back(std::make_unique<DonkeyPiece>(player1Textures[2], 1));
 
-    // 5 pieces each
-    player1Pieces.push_back(makeP1Frog());
-    player1Pieces.push_back(makeP1Snake());
-    player1Pieces.push_back(makeP1Donkey());
-    player1Pieces.push_back(makeP1Frog());
-    player1Pieces.push_back(makeP1Snake());
-
-    player2Pieces.push_back(makeP2Frog());
-    player2Pieces.push_back(makeP2Snake());
-    player2Pieces.push_back(makeP2Donkey());
-    player2Pieces.push_back(makeP2Frog());
-    player2Pieces.push_back(makeP2Snake());
+    player2Pieces.push_back(std::make_unique<FrogPiece>(player2Textures[0], 2));
+    player2Pieces.push_back(std::make_unique<SnakePiece>(player2Textures[1], 2));
+    player2Pieces.push_back(std::make_unique<DonkeyPiece>(player2Textures[2], 2));
+    player2Pieces.push_back(std::make_unique<DonkeyPiece>(player2Textures[2], 2));
+    player2Pieces.push_back(std::make_unique<DonkeyPiece>(player2Textures[2], 2));
 
     const float scale = 2.f;
 
-    for (int i = 0; i < static_cast<int>(player1Pieces.size()) && i < 5; ++i)
+    for (int i = 0; i < 5; ++i)
     {
         sf::Sprite& s = player1Pieces[i]->getSprite();
-
         s.setOrigin({ s.getTexture().getSize().x / 2.f, s.getTexture().getSize().y / 2.f });
         s.setScale({ scale, scale });
 
         sf::Vector2f boxPos = characterContainers[i].getPosition();
         sf::Vector2f boxSize = characterContainers[i].getSize();
-
-        float x = boxPos.x + boxSize.x * 0.5f;
-        float y = boxPos.y + boxSize.y * 0.5f;
-
-        s.setPosition({ x, y });
+        s.setPosition({ boxPos.x + boxSize.x * 0.5f,
+                        boxPos.y + boxSize.y * 0.5f });
     }
 
-    // Player 2 containers
-    for (int i = 0; i < static_cast<int>(player2Pieces.size()) && i < 5; ++i)
+    for (int i = 0; i < 5; ++i)
     {
         sf::Sprite& s = player2Pieces[i]->getSprite();
-
         s.setOrigin({ s.getTexture().getSize().x / 2.f, s.getTexture().getSize().y / 2.f });
         s.setScale({ scale, scale });
 
         sf::Vector2f boxPos = characterContainers[5 + i].getPosition();
         sf::Vector2f boxSize = characterContainers[5 + i].getSize();
-
-        float x = boxPos.x + boxSize.x * 0.5f;
-        float y = boxPos.y + boxSize.y * 0.5f;
-
-        s.setPosition({ x, y });
+        s.setPosition({ boxPos.x + boxSize.x * 0.5f,
+                        boxPos.y + boxSize.y * 0.5f });
     }
-
 }
 
 void Game::processEvents()
@@ -209,7 +191,7 @@ void Game::processEvents()
     }
 }
 
-void Game::processKeys(const std::optional<sf::Event> ev)
+void Game::processKeys(const std::optional<sf::Event>& ev)
 {
     if (!ev) return;
 
@@ -236,25 +218,20 @@ void Game::render()
 {
     window.clear(sf::Color(30, 30, 30));
 
-    // Board
     for (auto& cell : grid)
         window.draw(cell);
 
-    // Move highlights
     for (auto& h : moveHighlights)
         window.draw(h);
 
-    // Piece containers
     for (auto& box : characterContainers)
         window.draw(box);
 
-    // Pieces
     for (auto& p : player1Pieces)
         window.draw(p->getSprite());
     for (auto& p : player2Pieces)
         window.draw(p->getSprite());
 
-    // Message board
     window.draw(messageBoard);
     window.draw(displayedMessage);
 
