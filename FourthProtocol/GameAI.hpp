@@ -86,7 +86,7 @@ void Game::aiPlacePiece()
 
 void Game::aiMakeMove()
 {
-    const int MAX_DEPTH = 3;
+    int maxDepth = aiMaxDepth;
 
     std::vector<Move> moves;
     generateAllMoves(aiPlayer, moves);
@@ -104,7 +104,7 @@ void Game::aiMakeMove()
     for (int i = 0; i < static_cast<int>(moves.size()); ++i)
     {
         applyMoveToBoardOnly(moves[i].from, moves[i].to);
-        int score = minimax(0, MAX_DEPTH, false, aiPlayer, -1000000, 1000000);
+        int score = minimax(0, maxDepth, false, aiPlayer, -1000000, 1000000);
         undoMoveOnBoardOnly(moves[i].from, moves[i].to);
 
         if (score > bestScore)

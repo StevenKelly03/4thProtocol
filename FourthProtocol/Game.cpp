@@ -22,6 +22,7 @@ Game::Game()
     , selectedPieceIndex(-1)
     , containerCols(2)
     , aiPlayer(2)
+    , aiMaxDepth(3)
 {
     std::srand(static_cast<unsigned>(std::time(nullptr)));
 
@@ -133,7 +134,6 @@ void Game::initPieces()
         player2Textures[i].loadFromFile(player2Files[i]);
     }
 
-    // Revised to ensure correct piece counts and remove duplicates
     player1Pieces.clear();
     player2Pieces.clear();
 
@@ -197,8 +197,23 @@ void Game::processKeys(const std::optional<sf::Event>& ev)
 
     if (const auto* key = ev->getIf<sf::Event::KeyPressed>())
     {
-        if (key->code == sf::Keyboard::Key::Escape)
+        switch (key->code)
+        {
+        case sf::Keyboard::Key::Escape:
             exitGame = true;
+            break;
+        case sf::Keyboard::Key::Num1:
+            aiMaxDepth = 1;
+            break;
+        case sf::Keyboard::Key::Num2:
+            aiMaxDepth = 3;
+            break;
+        case sf::Keyboard::Key::Num3:
+            aiMaxDepth = 6;
+            break;
+        default:
+            break;
+        }
     }
 }
 

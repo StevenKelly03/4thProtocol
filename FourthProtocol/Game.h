@@ -99,10 +99,9 @@ private:
     void applyMoveToGame(int from, int to);
 
     void updateAI();
-    void aiPlacePiece();      // updated for strategic placement
+    void aiPlacePiece();
     void aiMakeMove();
 
-    // Updated for alpha-beta pruning
     int minimax(int depth, int maxDepth, bool maximizingPlayer,
         int aiPlayer, int alpha, int beta);
 
@@ -166,6 +165,7 @@ private:
     bool exitGame = false;
     bool vsAI = true;
     int  aiPlayer;
+    int  aiMaxDepth;
     bool gameOver = false;
 };
 
