@@ -1,0 +1,56 @@
+#------------------------------------------------------------
+# Project settings
+#------------------------------------------------------------
+
+PROJECT_NAME           = "The 4th Protocol"
+PROJECT_BRIEF          = "5x5 board game with SFML frontend and minimax AI"
+OUTPUT_DIRECTORY       = docs
+
+# Where your source lives
+INPUT                  = \
+    main.cpp \
+    Game.cpp \
+    Game.h \
+    GameAI.hpp \
+    GameInput.hpp \
+    GameMovement.hpp \
+    GameRules.hpp \
+    Pieces.hpp
+
+FILE_PATTERNS          = *.h *.hpp *.cpp
+RECURSIVE              = NO
+
+# Extract everything even if not documented
+EXTRACT_ALL            = YES
+
+# Treat this as C++ project
+OPTIMIZE_OUTPUT_FOR_C  = NO
+EXTRACT_PRIVATE        = YES
+EXTRACT_STATIC         = YES
+EXTRACT_LOCAL_CLASSES  = YES
+
+#------------------------------------------------------------
+# Build options
+#------------------------------------------------------------
+
+QUIET                  = NO
+WARN_IF_UNDOCUMENTED   = NO
+WARNINGS               = YES
+
+#------------------------------------------------------------
+# HTML output
+#------------------------------------------------------------
+
+GENERATE_HTML          = YES
+HTML_OUTPUT            = html
+
+# Turn this OFF if you don't care about LaTeX/PDF
+GENERATE_LATEX         = NO
+
+#------------------------------------------------------------
+# Diagrams
+#------------------------------------------------------------
+
+HAVE_DOT               = NO
+CALL_GRAPH             = NO
+CALLER_GRAPH           = NO
