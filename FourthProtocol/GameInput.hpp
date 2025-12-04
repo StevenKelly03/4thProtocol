@@ -15,11 +15,28 @@ void Game::processMouseClicks()
     sf::Vector2i mp = sf::Mouse::getPosition(window);
     sf::Vector2f p = window.mapPixelToCoords(mp);
 
+    for (int i = 0; i < 3; ++i)
+    {
+        if (difficultyBoxes[i].getGlobalBounds().contains(p))
+        {
+            if (i == 0)
+                aiMaxDepth = 1;
+            else if (i == 1)
+                aiMaxDepth = 2;
+            else
+                aiMaxDepth = 3;
+
+            updateDifficultyUI();
+            return;
+        }
+    }
+
     if (placementPhase)
         handlePlacementClick(p);
     else
         handleMovementClick(p);
 }
+
 
 // ------------------------------------------------------------
 // Placement phase

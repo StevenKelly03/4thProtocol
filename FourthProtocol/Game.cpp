@@ -13,6 +13,10 @@ Game::Game()
     : window(sf::VideoMode({ 2250u, 1250u }), "The 4th Protocol")
     , font()
     , displayedMessage(font, "", 40)
+    , difficultyTexts{ sf::Text(font, "", 30),
+                           sf::Text(font, "", 30),
+                           sf::Text(font, "", 30) }
+    , difficultyCurrentText(font, "", 32)
     , cellSize(250.f)
     , scale(4.f)
     , gridCols(5)
@@ -89,7 +93,7 @@ void Game::initGraphics()
     }
 
     float boardWidth = gridCols * cellSize;
-    float panelX = boardWidth + 50.f;
+    float panelX = boardWidth + 300.f;
     float containerSize = 200.f;
 
     for (int i = 0; i < 10; ++i)
@@ -124,6 +128,58 @@ void Game::initGraphics()
     displayedMessage.setString(player1Turn);
     displayedMessage.setPosition(
         messageBoard.getPosition() + sf::Vector2f{ 20.f, 35.f });
+
+    float difficultyX = boardWidth + 50.f;
+    float difficultyTopY = 150.f;
+
+    difficultyCurrentText.setFont(font);
+    difficultyCurrentText.setCharacterSize(32);
+    difficultyCurrentText.setFillColor(sf::Color::White);
+    difficultyCurrentText.setPosition({ difficultyX, difficultyTopY });
+
+    const char* levelNames[3] = { "Easy", "Medium", "Hard" };
+
+    float boxYStart = difficultyTopY + 50.f;
+
+    for (int i = 0; i < 3; ++i)
+    {
+        difficultyBoxes[i].setSize({ 220.f, 60.f });
+        difficultyBoxes[i].setOutlineThickness(2.f);
+        difficultyBoxes[i].setOutlineColor(sf::Color::White);
+        difficultyBoxes[i].setPosition({ difficultyX, boxYStart + i * 80.f });
+
+        difficultyTexts[i].setFont(font);
+        difficultyTexts[i].setCharacterSize(30);
+        difficultyTexts[i].setFillColor(sf::Color::White);
+        difficultyTexts[i].setString(levelNames[i]);
+
+        sf::Vector2f pos = difficultyBoxes[i].getPosition();
+        difficultyTexts[i].setPosition({ pos.x + 20.f, pos.y + 15.f });
+    }
+
+    updateDifficultyUI();
+
+}
+
+void Game::updateDifficultyUI()
+{
+    int index = 1;
+    if (aiMaxDepth <= 1)
+        index = 0;
+    else if (aiMaxDepth >= 3)
+        index = 2;
+
+    const char* levelNames[3] = { "Easy", "Medium", "Hard" };
+
+    for (int i = 0; i < 3; ++i)
+    {
+        if (i == index)
+            difficultyBoxes[i].setFillColor(sf::Color(90, 140, 220));
+        else
+            difficultyBoxes[i].setFillColor(sf::Color(80, 80, 80));
+    }
+
+    difficultyCurrentText.setString(std::string("Difficulty: ") + levelNames[index]);
 }
 
 void Game::initPieces()
@@ -134,6 +190,7 @@ void Game::initPieces()
         player2Textures[i].loadFromFile(player2Files[i]);
     }
 
+    // Revised to ensure correct piece counts and remove duplicates
     player1Pieces.clear();
     player2Pieces.clear();
 
@@ -197,22 +254,22 @@ void Game::processKeys(const std::optional<sf::Event>& ev)
 
     if (const auto* key = ev->getIf<sf::Event::KeyPressed>())
     {
-        switch (key->code)
-        {
-        case sf::Keyboard::Key::Escape:
+        if (key->code == sf::Keyboard::Key::Escape)
             exitGame = true;
-            break;
-        case sf::Keyboard::Key::Num1:
+        else if (key->code == sf::Keyboard::Key::Num1)
+        {
             aiMaxDepth = 1;
-            break;
-        case sf::Keyboard::Key::Num2:
+            updateDifficultyUI();
+        }
+        else if (key->code == sf::Keyboard::Key::Num2)
+        {
+            aiMaxDepth = 2;
+            updateDifficultyUI();
+        }
+        else if (key->code == sf::Keyboard::Key::Num3)
+        {
             aiMaxDepth = 3;
-            break;
-        case sf::Keyboard::Key::Num3:
-            aiMaxDepth = 6;
-            break;
-        default:
-            break;
+            updateDifficultyUI();
         }
     }
 }
@@ -241,6 +298,14 @@ void Game::render()
 
     for (auto& box : characterContainers)
         window.draw(box);
+
+    for (int i = 0; i < 3; ++i)
+    {
+        window.draw(difficultyBoxes[i]);
+        window.draw(difficultyTexts[i]);
+    }
+
+    window.draw(difficultyCurrentText);
 
     for (auto& p : player1Pieces)
         window.draw(p->getSprite());

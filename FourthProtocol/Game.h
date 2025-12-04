@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include <array>
 #include <string>
 #include <memory>
 #include <optional>
@@ -82,6 +83,7 @@ private:
     void processKeys(const std::optional<sf::Event>& ev);
     void update(sf::Time dt);
     void render();
+    void updateDifficultyUI();
 
     void processMouseClicks();
     void handlePlacementClick(const sf::Vector2f& p);
@@ -99,9 +101,10 @@ private:
     void applyMoveToGame(int from, int to);
 
     void updateAI();
-    void aiPlacePiece();
+    void aiPlacePiece();      // updated for strategic placement
     void aiMakeMove();
 
+    // Updated for alpha-beta pruning
     int minimax(int depth, int maxDepth, bool maximizingPlayer,
         int aiPlayer, int alpha, int beta);
 
@@ -162,6 +165,9 @@ private:
     std::vector<int>                moveHighlightIndices;
 
     int  containerCols;
+    sf::RectangleShape difficultyBoxes[3];
+    std::array<sf::Text, 3> difficultyTexts;
+    sf::Text difficultyCurrentText;
     bool exitGame = false;
     bool vsAI = true;
     int  aiPlayer;
