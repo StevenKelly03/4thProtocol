@@ -108,6 +108,8 @@ private:
     int minimax(int depth, int maxDepth, bool maximizingPlayer,
         int aiPlayer, int alpha, int beta);
 
+    int minimaxPlacement(int depth, int maxDepth, bool maximizingPlayer, int aiPlayer);
+
     int evaluateBoard(int aiPlayer) const;
     int evaluateLine(int a, int b, int c, int d, int aiPlayer) const;
 
