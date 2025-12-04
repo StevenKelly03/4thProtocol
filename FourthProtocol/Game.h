@@ -84,6 +84,7 @@ private:
     void update(sf::Time dt);
     void render();
     void updateDifficultyUI();
+    void updateContainerUI();
 
     void processMouseClicks();
     void handlePlacementClick(const sf::Vector2f& p);
@@ -162,6 +163,8 @@ private:
 
     int selectedPlayer;
     int selectedPieceIndex;
+    int selectedPieceContainerIndex = -1;
+    int selectedGridIndex = -1;
 
     std::vector<sf::RectangleShape> moveHighlights;
     std::vector<int>                moveHighlightIndices;

@@ -96,31 +96,28 @@ bool Game::canFrogJumpBoard(int fromIdx, int toIdx) const
     int dx = tc - fc;
     int dy = tr - fr;
 
-    bool straight = (dx == 0 || dy == 0);
-    bool diagonal = (std::abs(dx) == std::abs(dy));
-
-    if (!straight && !diagonal)
+    // Must be exactly 2 spaces away in one of the 8 directions
+    if (std::abs(dx) > 2 || std::abs(dy) > 2)
+        return false;
+    if (std::max(std::abs(dx), std::abs(dy)) != 2)
+        return false;
+    if (std::min(std::abs(dx), std::abs(dy)) > 2)
         return false;
 
+    // Calculate the index of the square being jumped over
     int sx = (dx > 0 ? 1 : dx < 0 ? -1 : 0);
     int sy = (dy > 0 ? 1 : dy < 0 ? -1 : 0);
 
-    int x = fc + sx;
-    int y = fr + sy;
+    int jumped_x = fc + sx;
+    int jumped_y = fr + sy;
 
-    bool jumped = false;
+    int jumpedIdx = jumped_y * gridCols + jumped_x;
 
-    while (x != tc || y != tr)
-    {
-        int idx = y * gridCols + x;
-        if (board[idx] != nullptr)
-            jumped = true;
+    // The jumped square must contain a piece
+    if (board[jumpedIdx] == nullptr)
+        return false;
 
-        x += sx;
-        y += sy;
-    }
-
-    return jumped;
+    return true;
 }
 
 void Game::generateAllMoves(int player, std::vector<Move>& moves) const

@@ -48,6 +48,7 @@ void Game::handlePlacementClick(const sf::Vector2f& p)
         return;
 
     auto& pieces = (currentTurn == 1 ? player1Pieces : player2Pieces);
+    int pieceOffset = (currentTurn == 1 ? 0 : 5);
 
     if (selectedPieceIndex == -1)
     {
@@ -59,6 +60,7 @@ void Game::handlePlacementClick(const sf::Vector2f& p)
             {
                 selectedPieceIndex = i;
                 selectedPlayer = currentTurn;
+                selectedPieceContainerIndex = pieceOffset + i;
                 return;
             }
         }
@@ -86,6 +88,7 @@ void Game::handlePlacementClick(const sf::Vector2f& p)
             checkGameOver();
             selectedPieceIndex = -1;
             selectedPlayer = 0;
+            selectedPieceContainerIndex = -1;
 
             if (gameOver)
                 return;
@@ -126,6 +129,7 @@ void Game::handleMovementClick(const sf::Vector2f& p)
                 selectedPieceIndex = i;
                 selectedPlayer = currentTurn;
                 generateMoveHighlights(i, currentTurn == 1);
+                selectedGridIndex = getGridIndexAtPosition(pieces[i]->getSprite().getPosition());
                 return;
             }
         }
@@ -154,6 +158,7 @@ void Game::handleMovementClick(const sf::Vector2f& p)
             clearMoveHighlights();
             selectedPieceIndex = -1;
             selectedPlayer = 0;
+            selectedGridIndex = -1;
 
             if (gameOver)
                 return;
@@ -173,6 +178,7 @@ void Game::handleMovementClick(const sf::Vector2f& p)
             selectedPieceIndex = i;
             selectedPlayer = currentTurn;
             generateMoveHighlights(i, currentTurn == 1);
+            selectedGridIndex = getGridIndexAtPosition(pieces[i]->getSprite().getPosition());
             return;
         }
     }
@@ -181,6 +187,7 @@ void Game::handleMovementClick(const sf::Vector2f& p)
     clearMoveHighlights();
     selectedPieceIndex = -1;
     selectedPlayer = 0;
+    selectedGridIndex = -1;
 }
 
 #endif // GAME_INPUT_HPP

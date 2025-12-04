@@ -182,6 +182,22 @@ void Game::updateDifficultyUI()
     difficultyCurrentText.setString(std::string("Difficulty: ") + levelNames[index]);
 }
 
+void Game::updateContainerUI()
+{
+    // Reset all containers to default color
+    for (int i = 0; i < 10; ++i)
+    {
+        characterContainers[i].setFillColor(sf::Color(80, 80, 80));
+    }
+
+    // Highlight the selected container/piece
+    if (selectedPieceContainerIndex != -1)
+    {
+        // Use a distinct highlight color, e.g., a bright blue
+        characterContainers[selectedPieceContainerIndex].setFillColor(sf::Color(90, 140, 220));
+    }
+}
+
 void Game::initPieces()
 {
     for (int i = 0; i < 3; ++i)
@@ -290,8 +306,22 @@ void Game::render()
 {
     window.clear(sf::Color(30, 30, 30));
 
+    if (placementPhase)
+        updateContainerUI();
+
     for (auto& cell : grid)
         window.draw(cell);
+
+    // Draw selection highlight for the piece being moved
+    if (!placementPhase && selectedGridIndex != -1)
+    {
+        sf::RectangleShape selectedHighlight;
+        selectedHighlight.setSize({ cellSize - 10.f, cellSize - 10.f });
+        selectedHighlight.setFillColor(sf::Color(255, 215, 0, 150)); // Gold/Yellow
+        sf::Vector2f pos = grid[selectedGridIndex].getPosition();
+        selectedHighlight.setPosition(pos + sf::Vector2f{ 5.f, 5.f });
+        window.draw(selectedHighlight);
+    }
 
     for (auto& h : moveHighlights)
         window.draw(h);
