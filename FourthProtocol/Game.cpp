@@ -10,15 +10,25 @@
 #include <ctime>
 
 Game::Game()
-    : window(sf::VideoMode({ 2250u, 1250u }), "The 4th Protocol")
+// Original: window(sf::VideoMode({ 2250u, 1250u }), "The 4th Protocol")
+    : window(sf::VideoMode({ 1250u, 695u }), "The 4th Protocol")
     , font()
-    , displayedMessage(font, "", 40)
-    , difficultyTexts{ sf::Text(font, "", 30),
-                           sf::Text(font, "", 30),
-                           sf::Text(font, "", 30) }
-    , difficultyCurrentText(font, "", 32)
-    , cellSize(250.f)
-    , scale(4.f)
+    // Original: displayedMessage(font, "", 40)
+    , displayedMessage(font, "", 23)
+    , difficultyTexts{
+        // Original: sf::Text(font, "", 30) -> Scaled to 17
+        sf::Text(font, "", 17),
+        // Original: sf::Text(font, "", 30) -> Scaled to 17
+        sf::Text(font, "", 17),
+        // Original: sf::Text(font, "", 30) -> Scaled to 17
+        sf::Text(font, "", 17)
+    }
+    // Original: difficultyCurrentText(font, "", 32) -> Scaled to 19
+    , difficultyCurrentText(font, "", 19)
+    // Original: cellSize(250.f) -> Scaled to 138.9f
+    , cellSize(138.9f)
+    // Original: scale(4.f) -> Scaled to 2.2224f
+    , scale(2.2224f)
     , gridCols(5)
     , currentTurn(1)
     , placementPhase(true)
@@ -66,6 +76,33 @@ void Game::run()
     }
 }
 
+void Game::resetGame()
+{
+    currentTurn = 1;
+    placementPhase = true;
+    gameOver = false;
+    selectedPlayer = 0;
+    selectedPieceIndex = -1;
+    selectedPieceContainerIndex = -1;
+    selectedGridIndex = -1;
+
+    board.assign(25, nullptr);
+
+    for (auto& p : player1Pieces)
+    {
+        p->setPlaced(false);
+    }
+    for (auto& p : player2Pieces)
+    {
+        p->setPlaced(false);
+    }
+
+    clearMoveHighlights();
+    displayedMessage.setString(player1Turn);
+
+    initPieces();
+}
+
 void Game::initGraphics()
 {
     window.setFramerateLimit(60);
@@ -93,8 +130,10 @@ void Game::initGraphics()
     }
 
     float boardWidth = gridCols * cellSize;
-    float panelX = boardWidth + 300.f;
-    float containerSize = 200.f;
+    // Original: 300.f -> Scaled to 167.f
+    float panelX = boardWidth + 167.f;
+    // Original: 200.f -> Scaled to 111.f
+    float containerSize = 111.f;
 
     for (int i = 0; i < 10; ++i)
     {
@@ -107,54 +146,74 @@ void Game::initGraphics()
         int col = (i < 5) ? 0 : 1;
         int row = (i < 5) ? i : i - 5;
 
-        box.setPosition({ panelX + col * (containerSize + 40.f),
-                         150.f + row * (containerSize + 20.f) });
+        // Original: 40.f -> Scaled to 22.f
+        // Original: 150.f -> Scaled to 83.f
+        // Original: 20.f -> Scaled to 11.f
+        box.setPosition({ panelX + col * (containerSize + 22.f),
+                         83.f + row * (containerSize + 11.f) });
 
         characterContainers[i] = box;
     }
 
     float boardWidthRight = gridCols * cellSize;
-    float msgPanelX = boardWidthRight + 50.f;
+    // Original: 50.f -> Scaled to 28.f
+    float msgPanelX = boardWidthRight + 28.f;
 
-    messageBoard.setSize({ 800.f, 120.f });
+    // Original: 800.f -> Scaled to 445.f
+    // Original: 120.f -> Scaled to 67.f
+    messageBoard.setSize({ 445.f, 67.f });
     messageBoard.setFillColor(sf::Color(50, 50, 50));
     messageBoard.setOutlineThickness(3.f);
     messageBoard.setOutlineColor(sf::Color::White);
-    messageBoard.setPosition({ msgPanelX, 20.f });
+    // Original: 20.f -> Scaled to 11.f
+    messageBoard.setPosition({ msgPanelX, 11.f });
 
     displayedMessage.setFont(font);
-    displayedMessage.setCharacterSize(40);
+    // Character size is now 23, set in constructor
+    displayedMessage.setCharacterSize(23);
     displayedMessage.setFillColor(sf::Color::White);
     displayedMessage.setString(player1Turn);
+    // Original: 20.f -> Scaled to 11.f
+    // Original: 35.f -> Scaled to 19.f
     displayedMessage.setPosition(
-        messageBoard.getPosition() + sf::Vector2f{ 20.f, 35.f });
+        messageBoard.getPosition() + sf::Vector2f{ 11.f, 19.f });
 
-    float difficultyX = boardWidth + 50.f;
-    float difficultyTopY = 150.f;
+    // Original: 50.f -> Scaled to 28.f
+    float difficultyX = boardWidth + 28.f;
+    // Original: 150.f -> Scaled to 83.f
+    float difficultyTopY = 83.f;
 
     difficultyCurrentText.setFont(font);
-    difficultyCurrentText.setCharacterSize(32);
+    // Character size is now 19, set in constructor
+    difficultyCurrentText.setCharacterSize(19);
     difficultyCurrentText.setFillColor(sf::Color::White);
     difficultyCurrentText.setPosition({ difficultyX, difficultyTopY });
 
     const char* levelNames[3] = { "Easy", "Medium", "Hard" };
 
-    float boxYStart = difficultyTopY + 50.f;
+    // Original: 50.f -> Scaled to 28.f
+    float boxYStart = difficultyTopY + 28.f;
 
     for (int i = 0; i < 3; ++i)
     {
-        difficultyBoxes[i].setSize({ 220.f, 60.f });
+        // Original: 220.f -> Scaled to 122.f
+        // Original: 60.f -> Scaled to 33.f
+        difficultyBoxes[i].setSize({ 122.f, 33.f });
         difficultyBoxes[i].setOutlineThickness(2.f);
         difficultyBoxes[i].setOutlineColor(sf::Color::White);
-        difficultyBoxes[i].setPosition({ difficultyX, boxYStart + i * 80.f });
+        // Original: 80.f -> Scaled to 44.f
+        difficultyBoxes[i].setPosition({ difficultyX, boxYStart + i * 44.f });
 
         difficultyTexts[i].setFont(font);
-        difficultyTexts[i].setCharacterSize(30);
+        // Character size is now 17, set in constructor
+        difficultyTexts[i].setCharacterSize(17);
         difficultyTexts[i].setFillColor(sf::Color::White);
         difficultyTexts[i].setString(levelNames[i]);
 
         sf::Vector2f pos = difficultyBoxes[i].getPosition();
-        difficultyTexts[i].setPosition({ pos.x + 20.f, pos.y + 15.f });
+        // Original: 20.f -> Scaled to 11.f
+        // Original: 15.f -> Scaled to 8.f
+        difficultyTexts[i].setPosition({ pos.x + 11.f, pos.y + 8.f });
     }
 
     updateDifficultyUI();
@@ -222,7 +281,7 @@ void Game::initPieces()
     player2Pieces.push_back(std::make_unique<DonkeyPiece>(player2Textures[2], 2));
     player2Pieces.push_back(std::make_unique<DonkeyPiece>(player2Textures[2], 2));
 
-    const float scale = 2.f;
+    const float scale = 2.2224f;
 
     for (int i = 0; i < 5; ++i)
     {
@@ -272,6 +331,8 @@ void Game::processKeys(const std::optional<sf::Event>& ev)
     {
         if (key->code == sf::Keyboard::Key::Escape)
             exitGame = true;
+        else if (key->code == sf::Keyboard::Key::R)
+            resetGame();
         else if (key->code == sf::Keyboard::Key::Num1)
         {
             aiMaxDepth = 1;

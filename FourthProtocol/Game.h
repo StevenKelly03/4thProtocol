@@ -118,6 +118,8 @@ private:
     bool isBoardFull() const;
     void checkGameOver();
 
+    void resetGame();
+
 private:
     sf::RenderWindow window;
     sf::Font         font;
