@@ -8,7 +8,8 @@ var searchData=
   ['main_2ecpp_5',['main.cpp',['../main_8cpp.html',1,'']]],
   ['messageboard_6',['messageBoard',['../class_game.html#a31ffb69da45a3c0587599e4ae1435eba',1,'Game']]],
   ['minimax_7',['minimax',['../class_game.html#a6d0b33eeb650c72df4b89640f3268591',1,'Game']]],
-  ['move_8',['Move',['../struct_move.html',1,'']]],
-  ['movehighlightindices_9',['moveHighlightIndices',['../class_game.html#a31c912698e95855b8947a528ceb052df',1,'Game']]],
-  ['movehighlights_10',['moveHighlights',['../class_game.html#a5cd6f01149f1a3b8cca9a09d8530c5cc',1,'Game']]]
+  ['minimaxplacement_8',['minimaxPlacement',['../class_game.html#a3396ebd4ff59235f851e3aa2eda110e3',1,'Game']]],
+  ['move_9',['Move',['../struct_move.html',1,'']]],
+  ['movehighlightindices_10',['moveHighlightIndices',['../class_game.html#a31c912698e95855b8947a528ceb052df',1,'Game']]],
+  ['movehighlights_11',['moveHighlights',['../class_game.html#a5cd6f01149f1a3b8cca9a09d8530c5cc',1,'Game']]]
 ];

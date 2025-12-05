@@ -145,172 +145,181 @@ $(function(){initNavTree('_game_input_8hpp_source.html','',''); });
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>        <span class="keywordflow">return</span>;</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="keyword">auto</span>&amp; pieces = (<a class="code hl_variable" href="class_game.html#ab531d251551abf240c4351b41fe475b7">currentTurn</a> == 1 ? <a class="code hl_variable" href="class_game.html#aa539bd4c62aa408fe795fd586c9cb6aa">player1Pieces</a> : <a class="code hl_variable" href="class_game.html#a5ddabd7d5349868b2f257037909beb21">player2Pieces</a>);</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="class_game.html#af9f869096f97c3f99f93bf14596cfae3">selectedPieceIndex</a> == -1)</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    {</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>        <span class="comment">// select piece in container</span></div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; static_cast&lt;int&gt;(pieces.size()); ++i)</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        {</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>            <span class="keywordflow">if</span> (!pieces[i]-&gt;isPlaced() &amp;&amp;</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>                pieces[i]-&gt;getSprite().getGlobalBounds().contains(p))</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>            {</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>                <a class="code hl_variable" href="class_game.html#af9f869096f97c3f99f93bf14596cfae3">selectedPieceIndex</a> = i;</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>                <a class="code hl_variable" href="class_game.html#a764a28e4171f491dcc25a836034f0422">selectedPlayer</a> = <a class="code hl_variable" href="class_game.html#ab531d251551abf240c4351b41fe475b7">currentTurn</a>;</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>                <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>            }</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        }</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    }</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <span class="comment">// place into grid</span></div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; 25; ++i)</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    {</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="class_game.html#af15793ed3c9f85cc7ce7a5fe294241a1">grid</a>[i].getGlobalBounds().contains(p))</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        {</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>            <span class="keywordflow">if</span> (<a class="code hl_variable" href="class_game.html#a7e6ee41c910f72ac77943576a0e268b9">board</a>[i] != <span class="keyword">nullptr</span>)</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>                <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>            <a class="code hl_class" href="class_piece.html">Piece</a>* piece = pieces[<a class="code hl_variable" href="class_game.html#af9f869096f97c3f99f93bf14596cfae3">selectedPieceIndex</a>].get();</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>            sf::Vector2f cellPos = <a class="code hl_variable" href="class_game.html#af15793ed3c9f85cc7ce7a5fe294241a1">grid</a>[i].getPosition();</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>            sf::Sprite&amp; s = piece-&gt;<a class="code hl_function" href="class_piece.html#a8d619c36c9f25646d3820a2920fea254">getSprite</a>();</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>            s.setPosition({ cellPos.x + <a class="code hl_variable" href="class_game.html#a2266d2f24a793ac535ea509735a9cff9">cellSize</a> / 2.f,</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>                            cellPos.y + <a class="code hl_variable" href="class_game.html#a2266d2f24a793ac535ea509735a9cff9">cellSize</a> / 2.f });</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>            piece-&gt;<a class="code hl_function" href="class_piece.html#a972930b5102a86f7d6eefe51b53f2783">setPlaced</a>(<span class="keyword">true</span>);</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>            <a class="code hl_variable" href="class_game.html#a7e6ee41c910f72ac77943576a0e268b9">board</a>[i] = piece;</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>            <a class="code hl_function" href="class_game.html#a00f9c67b78365873ec0a54b0aa45284f">checkGameOver</a>();</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>            <a class="code hl_variable" href="class_game.html#af9f869096f97c3f99f93bf14596cfae3">selectedPieceIndex</a> = -1;</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>            <a class="code hl_variable" href="class_game.html#a764a28e4171f491dcc25a836034f0422">selectedPlayer</a> = 0;</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>            <span class="keywordflow">if</span> (<a class="code hl_variable" href="class_game.html#a21f9857b2d4b38b97ec90b9c2ce3413d">gameOver</a>)</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>                <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keywordtype">int</span> pieceOffset = (<a class="code hl_variable" href="class_game.html#ab531d251551abf240c4351b41fe475b7">currentTurn</a> == 1 ? 0 : 5);</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="class_game.html#af9f869096f97c3f99f93bf14596cfae3">selectedPieceIndex</a> == -1)</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    {</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>        <span class="comment">// select piece in container</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; static_cast&lt;int&gt;(pieces.size()); ++i)</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>        {</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>            <span class="keywordflow">if</span> (!pieces[i]-&gt;isPlaced() &amp;&amp;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>                pieces[i]-&gt;getSprite().getGlobalBounds().contains(p))</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>            {</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>                <a class="code hl_variable" href="class_game.html#af9f869096f97c3f99f93bf14596cfae3">selectedPieceIndex</a> = i;</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>                <a class="code hl_variable" href="class_game.html#a764a28e4171f491dcc25a836034f0422">selectedPlayer</a> = <a class="code hl_variable" href="class_game.html#ab531d251551abf240c4351b41fe475b7">currentTurn</a>;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>                <a class="code hl_variable" href="class_game.html#a8f396bafcc1b7c1c5ad905cd3c2510a8">selectedPieceContainerIndex</a> = pieceOffset + i;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>                <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>            }</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        }</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>        <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    }</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="comment">// place into grid</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; 25; ++i)</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    {</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="class_game.html#af15793ed3c9f85cc7ce7a5fe294241a1">grid</a>[i].getGlobalBounds().contains(p))</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>        {</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>            <span class="keywordflow">if</span> (<a class="code hl_variable" href="class_game.html#a7e6ee41c910f72ac77943576a0e268b9">board</a>[i] != <span class="keyword">nullptr</span>)</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>                <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>            <a class="code hl_class" href="class_piece.html">Piece</a>* piece = pieces[<a class="code hl_variable" href="class_game.html#af9f869096f97c3f99f93bf14596cfae3">selectedPieceIndex</a>].get();</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>            sf::Vector2f cellPos = <a class="code hl_variable" href="class_game.html#af15793ed3c9f85cc7ce7a5fe294241a1">grid</a>[i].getPosition();</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>            sf::Sprite&amp; s = piece-&gt;<a class="code hl_function" href="class_piece.html#a8d619c36c9f25646d3820a2920fea254">getSprite</a>();</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>            s.setPosition({ cellPos.x + <a class="code hl_variable" href="class_game.html#a2266d2f24a793ac535ea509735a9cff9">cellSize</a> / 2.f,</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>                            cellPos.y + <a class="code hl_variable" href="class_game.html#a2266d2f24a793ac535ea509735a9cff9">cellSize</a> / 2.f });</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>            piece-&gt;<a class="code hl_function" href="class_piece.html#a972930b5102a86f7d6eefe51b53f2783">setPlaced</a>(<span class="keyword">true</span>);</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>            <a class="code hl_variable" href="class_game.html#a7e6ee41c910f72ac77943576a0e268b9">board</a>[i] = piece;</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>            <a class="code hl_function" href="class_game.html#a00f9c67b78365873ec0a54b0aa45284f">checkGameOver</a>();</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>            <a class="code hl_variable" href="class_game.html#af9f869096f97c3f99f93bf14596cfae3">selectedPieceIndex</a> = -1;</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>            <a class="code hl_variable" href="class_game.html#a764a28e4171f491dcc25a836034f0422">selectedPlayer</a> = 0;</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>            <a class="code hl_variable" href="class_game.html#a8f396bafcc1b7c1c5ad905cd3c2510a8">selectedPieceContainerIndex</a> = -1;</div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>            <span class="keywordtype">bool</span> allPlaced = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>            <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; pp : <a class="code hl_variable" href="class_game.html#aa539bd4c62aa408fe795fd586c9cb6aa">player1Pieces</a>) <span class="keywordflow">if</span> (!pp-&gt;isPlaced()) allPlaced = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>            <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; pp : <a class="code hl_variable" href="class_game.html#a5ddabd7d5349868b2f257037909beb21">player2Pieces</a>) <span class="keywordflow">if</span> (!pp-&gt;isPlaced()) allPlaced = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>            <span class="keywordflow">if</span> (allPlaced)</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>                <a class="code hl_variable" href="class_game.html#af3649899da7b40f630c8694e4aadd532">placementPhase</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>            <span class="keywordflow">if</span> (<a class="code hl_variable" href="class_game.html#a21f9857b2d4b38b97ec90b9c2ce3413d">gameOver</a>)</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>                <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>            <span class="keywordtype">bool</span> allPlaced = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>            <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; pp : <a class="code hl_variable" href="class_game.html#aa539bd4c62aa408fe795fd586c9cb6aa">player1Pieces</a>) <span class="keywordflow">if</span> (!pp-&gt;isPlaced()) allPlaced = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>            <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; pp : <a class="code hl_variable" href="class_game.html#a5ddabd7d5349868b2f257037909beb21">player2Pieces</a>) <span class="keywordflow">if</span> (!pp-&gt;isPlaced()) allPlaced = <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>            <a class="code hl_variable" href="class_game.html#ab531d251551abf240c4351b41fe475b7">currentTurn</a> = (<a class="code hl_variable" href="class_game.html#ab531d251551abf240c4351b41fe475b7">currentTurn</a> == 1 ? 2 : 1);</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>            <a class="code hl_variable" href="class_game.html#ac1cb755da6760902a1135b592ff051be">displayedMessage</a>.setString(<a class="code hl_variable" href="class_game.html#ab531d251551abf240c4351b41fe475b7">currentTurn</a> == 1 ? <a class="code hl_variable" href="class_game.html#a54fc90ce168270b0089a832d8904aa23">player1Turn</a> : <a class="code hl_variable" href="class_game.html#a110177571664e17fdd6d308b7db8aa6d">player2Turn</a>);</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>            <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>        }</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    }</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>}</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>            <span class="keywordflow">if</span> (allPlaced)</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>                <a class="code hl_variable" href="class_game.html#af3649899da7b40f630c8694e4aadd532">placementPhase</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>            <a class="code hl_variable" href="class_game.html#ab531d251551abf240c4351b41fe475b7">currentTurn</a> = (<a class="code hl_variable" href="class_game.html#ab531d251551abf240c4351b41fe475b7">currentTurn</a> == 1 ? 2 : 1);</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>            <a class="code hl_variable" href="class_game.html#ac1cb755da6760902a1135b592ff051be">displayedMessage</a>.setString(<a class="code hl_variable" href="class_game.html#ab531d251551abf240c4351b41fe475b7">currentTurn</a> == 1 ? <a class="code hl_variable" href="class_game.html#a54fc90ce168270b0089a832d8904aa23">player1Turn</a> : <a class="code hl_variable" href="class_game.html#a110177571664e17fdd6d308b7db8aa6d">player2Turn</a>);</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>            <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>        }</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    }</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>}</div>
 </div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span><span class="comment">// ------------------------------------------------------------</span></div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span><span class="comment">// Movement phase</span></div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="comment">// ------------------------------------------------------------</span></div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
-<div class="foldopen" id="foldopen00111" data-start="{" data-end="}">
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno"><a class="line" href="class_game.html#acc8fbb5f63107e4750d414ab2891131a">  111</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_game.html#acc8fbb5f63107e4750d414ab2891131a">Game::handleMovementClick</a>(<span class="keyword">const</span> sf::Vector2f&amp; p)</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>{</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="class_game.html#a21f9857b2d4b38b97ec90b9c2ce3413d">gameOver</a>)</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>        <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    <span class="keyword">auto</span>&amp; pieces = (<a class="code hl_variable" href="class_game.html#ab531d251551abf240c4351b41fe475b7">currentTurn</a> == 1 ? <a class="code hl_variable" href="class_game.html#aa539bd4c62aa408fe795fd586c9cb6aa">player1Pieces</a> : <a class="code hl_variable" href="class_game.html#a5ddabd7d5349868b2f257037909beb21">player2Pieces</a>);</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="class_game.html#af9f869096f97c3f99f93bf14596cfae3">selectedPieceIndex</a> == -1)</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    {</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>        <span class="comment">// select a placed piece</span></div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; static_cast&lt;int&gt;(pieces.size()); ++i)</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>        {</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>            <span class="keywordflow">if</span> (pieces[i]-&gt;isPlaced() &amp;&amp;</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>                pieces[i]-&gt;getSprite().getGlobalBounds().contains(p))</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>            {</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>                <a class="code hl_variable" href="class_game.html#af9f869096f97c3f99f93bf14596cfae3">selectedPieceIndex</a> = i;</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>                <a class="code hl_variable" href="class_game.html#a764a28e4171f491dcc25a836034f0422">selectedPlayer</a> = <a class="code hl_variable" href="class_game.html#ab531d251551abf240c4351b41fe475b7">currentTurn</a>;</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>                <a class="code hl_function" href="class_game.html#a878101f65c29f936ef8d4e7cee9def2b">generateMoveHighlights</a>(i, <a class="code hl_variable" href="class_game.html#ab531d251551abf240c4351b41fe475b7">currentTurn</a> == 1);</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>                <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>            }</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>        }</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>        <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    }</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    <span class="comment">// attempt move to one of the highlighted cells</span></div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> h = 0; h &lt; static_cast&lt;int&gt;(<a class="code hl_variable" href="class_game.html#a5cd6f01149f1a3b8cca9a09d8530c5cc">moveHighlights</a>.size()); ++h)</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    {</div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="class_game.html#a5cd6f01149f1a3b8cca9a09d8530c5cc">moveHighlights</a>[h].getGlobalBounds().contains(p))</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>        {</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>            <span class="keywordtype">int</span>   dest = <a class="code hl_variable" href="class_game.html#a31c912698e95855b8947a528ceb052df">moveHighlightIndices</a>[h];</div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>            <a class="code hl_class" href="class_piece.html">Piece</a>* piece = pieces[<a class="code hl_variable" href="class_game.html#af9f869096f97c3f99f93bf14596cfae3">selectedPieceIndex</a>].get();</div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>            <span class="keywordtype">int</span>   from = <a class="code hl_function" href="class_game.html#a721aa511e75e3f093c8835ca19b229d2">getGridIndexAtPosition</a>(piece-&gt;<a class="code hl_function" href="class_piece.html#a8d619c36c9f25646d3820a2920fea254">getSprite</a>().getPosition());</div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span> </div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>            <a class="code hl_variable" href="class_game.html#a7e6ee41c910f72ac77943576a0e268b9">board</a>[from] = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span> </div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>            sf::Vector2f cellPos = <a class="code hl_variable" href="class_game.html#af15793ed3c9f85cc7ce7a5fe294241a1">grid</a>[dest].getPosition();</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>            piece-&gt;<a class="code hl_function" href="class_piece.html#a8d619c36c9f25646d3820a2920fea254">getSprite</a>().setPosition(</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>                { cellPos.x + <a class="code hl_variable" href="class_game.html#a2266d2f24a793ac535ea509735a9cff9">cellSize</a> / 2.f,</div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>                  cellPos.y + <a class="code hl_variable" href="class_game.html#a2266d2f24a793ac535ea509735a9cff9">cellSize</a> / 2.f });</div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span> </div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>            <a class="code hl_variable" href="class_game.html#a7e6ee41c910f72ac77943576a0e268b9">board</a>[dest] = piece;</div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span> </div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>            <a class="code hl_function" href="class_game.html#a00f9c67b78365873ec0a54b0aa45284f">checkGameOver</a>();</div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>            <a class="code hl_function" href="class_game.html#af713cd5a826ffd206d110ae0d0cc8e06">clearMoveHighlights</a>();</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>            <a class="code hl_variable" href="class_game.html#af9f869096f97c3f99f93bf14596cfae3">selectedPieceIndex</a> = -1;</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>            <a class="code hl_variable" href="class_game.html#a764a28e4171f491dcc25a836034f0422">selectedPlayer</a> = 0;</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>            <span class="keywordflow">if</span> (<a class="code hl_variable" href="class_game.html#a21f9857b2d4b38b97ec90b9c2ce3413d">gameOver</a>)</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>                <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span> </div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>            <a class="code hl_variable" href="class_game.html#ab531d251551abf240c4351b41fe475b7">currentTurn</a> = (<a class="code hl_variable" href="class_game.html#ab531d251551abf240c4351b41fe475b7">currentTurn</a> == 1 ? 2 : 1);</div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>            <a class="code hl_variable" href="class_game.html#ac1cb755da6760902a1135b592ff051be">displayedMessage</a>.setString(<a class="code hl_variable" href="class_game.html#ab531d251551abf240c4351b41fe475b7">currentTurn</a> == 1 ? <a class="code hl_variable" href="class_game.html#a54fc90ce168270b0089a832d8904aa23">player1Turn</a> : <a class="code hl_variable" href="class_game.html#a110177571664e17fdd6d308b7db8aa6d">player2Turn</a>);</div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>            <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>        }</div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>    }</div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span> </div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>    <span class="comment">// click on different own piece: change selection</span></div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; static_cast&lt;int&gt;(pieces.size()); ++i)</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>    {</div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>        <span class="keywordflow">if</span> (pieces[i]-&gt;isPlaced() &amp;&amp;</div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>            pieces[i]-&gt;getSprite().getGlobalBounds().contains(p))</div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>        {</div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>            <a class="code hl_variable" href="class_game.html#af9f869096f97c3f99f93bf14596cfae3">selectedPieceIndex</a> = i;</div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>            <a class="code hl_variable" href="class_game.html#a764a28e4171f491dcc25a836034f0422">selectedPlayer</a> = <a class="code hl_variable" href="class_game.html#ab531d251551abf240c4351b41fe475b7">currentTurn</a>;</div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>            <a class="code hl_function" href="class_game.html#a878101f65c29f936ef8d4e7cee9def2b">generateMoveHighlights</a>(i, <a class="code hl_variable" href="class_game.html#ab531d251551abf240c4351b41fe475b7">currentTurn</a> == 1);</div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>            <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>        }</div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>    }</div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span> </div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    <span class="comment">// clicked elsewhere: clear selection</span></div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>    <a class="code hl_function" href="class_game.html#af713cd5a826ffd206d110ae0d0cc8e06">clearMoveHighlights</a>();</div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>    <a class="code hl_variable" href="class_game.html#af9f869096f97c3f99f93bf14596cfae3">selectedPieceIndex</a> = -1;</div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>    <a class="code hl_variable" href="class_game.html#a764a28e4171f491dcc25a836034f0422">selectedPlayer</a> = 0;</div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>}</div>
-</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span><span class="comment">// ------------------------------------------------------------</span></div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="comment">// Movement phase</span></div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span><span class="comment">// ------------------------------------------------------------</span></div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
+<div class="foldopen" id="foldopen00114" data-start="{" data-end="}">
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno"><a class="line" href="class_game.html#acc8fbb5f63107e4750d414ab2891131a">  114</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_game.html#acc8fbb5f63107e4750d414ab2891131a">Game::handleMovementClick</a>(<span class="keyword">const</span> sf::Vector2f&amp; p)</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>{</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="class_game.html#a21f9857b2d4b38b97ec90b9c2ce3413d">gameOver</a>)</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>        <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    <span class="keyword">auto</span>&amp; pieces = (<a class="code hl_variable" href="class_game.html#ab531d251551abf240c4351b41fe475b7">currentTurn</a> == 1 ? <a class="code hl_variable" href="class_game.html#aa539bd4c62aa408fe795fd586c9cb6aa">player1Pieces</a> : <a class="code hl_variable" href="class_game.html#a5ddabd7d5349868b2f257037909beb21">player2Pieces</a>);</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> </div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="class_game.html#af9f869096f97c3f99f93bf14596cfae3">selectedPieceIndex</a> == -1)</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    {</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>        <span class="comment">// select a placed piece</span></div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; static_cast&lt;int&gt;(pieces.size()); ++i)</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>        {</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>            <span class="keywordflow">if</span> (pieces[i]-&gt;isPlaced() &amp;&amp;</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>                pieces[i]-&gt;getSprite().getGlobalBounds().contains(p))</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>            {</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>                <a class="code hl_variable" href="class_game.html#af9f869096f97c3f99f93bf14596cfae3">selectedPieceIndex</a> = i;</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>                <a class="code hl_variable" href="class_game.html#a764a28e4171f491dcc25a836034f0422">selectedPlayer</a> = <a class="code hl_variable" href="class_game.html#ab531d251551abf240c4351b41fe475b7">currentTurn</a>;</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>                <a class="code hl_function" href="class_game.html#a878101f65c29f936ef8d4e7cee9def2b">generateMoveHighlights</a>(i, <a class="code hl_variable" href="class_game.html#ab531d251551abf240c4351b41fe475b7">currentTurn</a> == 1);</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>                <a class="code hl_variable" href="class_game.html#abc580dfaef74d13ae4171a030294778e">selectedGridIndex</a> = <a class="code hl_function" href="class_game.html#a721aa511e75e3f093c8835ca19b229d2">getGridIndexAtPosition</a>(pieces[i]-&gt;getSprite().getPosition());</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>                <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>            }</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>        }</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>        <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    }</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span> </div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    <span class="comment">// attempt move to one of the highlighted cells</span></div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> h = 0; h &lt; static_cast&lt;int&gt;(<a class="code hl_variable" href="class_game.html#a5cd6f01149f1a3b8cca9a09d8530c5cc">moveHighlights</a>.size()); ++h)</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>    {</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="class_game.html#a5cd6f01149f1a3b8cca9a09d8530c5cc">moveHighlights</a>[h].getGlobalBounds().contains(p))</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>        {</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>            <span class="keywordtype">int</span>   dest = <a class="code hl_variable" href="class_game.html#a31c912698e95855b8947a528ceb052df">moveHighlightIndices</a>[h];</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>            <a class="code hl_class" href="class_piece.html">Piece</a>* piece = pieces[<a class="code hl_variable" href="class_game.html#af9f869096f97c3f99f93bf14596cfae3">selectedPieceIndex</a>].get();</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>            <span class="keywordtype">int</span>   from = <a class="code hl_function" href="class_game.html#a721aa511e75e3f093c8835ca19b229d2">getGridIndexAtPosition</a>(piece-&gt;<a class="code hl_function" href="class_piece.html#a8d619c36c9f25646d3820a2920fea254">getSprite</a>().getPosition());</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span> </div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>            <a class="code hl_variable" href="class_game.html#a7e6ee41c910f72ac77943576a0e268b9">board</a>[from] = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span> </div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>            sf::Vector2f cellPos = <a class="code hl_variable" href="class_game.html#af15793ed3c9f85cc7ce7a5fe294241a1">grid</a>[dest].getPosition();</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>            piece-&gt;<a class="code hl_function" href="class_piece.html#a8d619c36c9f25646d3820a2920fea254">getSprite</a>().setPosition(</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>                { cellPos.x + <a class="code hl_variable" href="class_game.html#a2266d2f24a793ac535ea509735a9cff9">cellSize</a> / 2.f,</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>                  cellPos.y + <a class="code hl_variable" href="class_game.html#a2266d2f24a793ac535ea509735a9cff9">cellSize</a> / 2.f });</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span> </div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>            <a class="code hl_variable" href="class_game.html#a7e6ee41c910f72ac77943576a0e268b9">board</a>[dest] = piece;</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span> </div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>            <a class="code hl_function" href="class_game.html#a00f9c67b78365873ec0a54b0aa45284f">checkGameOver</a>();</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>            <a class="code hl_function" href="class_game.html#af713cd5a826ffd206d110ae0d0cc8e06">clearMoveHighlights</a>();</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>            <a class="code hl_variable" href="class_game.html#af9f869096f97c3f99f93bf14596cfae3">selectedPieceIndex</a> = -1;</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>            <a class="code hl_variable" href="class_game.html#a764a28e4171f491dcc25a836034f0422">selectedPlayer</a> = 0;</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>            <a class="code hl_variable" href="class_game.html#abc580dfaef74d13ae4171a030294778e">selectedGridIndex</a> = -1;</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span> </div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>            <span class="keywordflow">if</span> (<a class="code hl_variable" href="class_game.html#a21f9857b2d4b38b97ec90b9c2ce3413d">gameOver</a>)</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>                <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span> </div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>            <a class="code hl_variable" href="class_game.html#ab531d251551abf240c4351b41fe475b7">currentTurn</a> = (<a class="code hl_variable" href="class_game.html#ab531d251551abf240c4351b41fe475b7">currentTurn</a> == 1 ? 2 : 1);</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>            <a class="code hl_variable" href="class_game.html#ac1cb755da6760902a1135b592ff051be">displayedMessage</a>.setString(<a class="code hl_variable" href="class_game.html#ab531d251551abf240c4351b41fe475b7">currentTurn</a> == 1 ? <a class="code hl_variable" href="class_game.html#a54fc90ce168270b0089a832d8904aa23">player1Turn</a> : <a class="code hl_variable" href="class_game.html#a110177571664e17fdd6d308b7db8aa6d">player2Turn</a>);</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>            <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>        }</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>    }</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span> </div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>    <span class="comment">// click on different own piece: change selection</span></div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; static_cast&lt;int&gt;(pieces.size()); ++i)</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>    {</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>        <span class="keywordflow">if</span> (pieces[i]-&gt;isPlaced() &amp;&amp;</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>            pieces[i]-&gt;getSprite().getGlobalBounds().contains(p))</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>        {</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>            <a class="code hl_variable" href="class_game.html#af9f869096f97c3f99f93bf14596cfae3">selectedPieceIndex</a> = i;</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>            <a class="code hl_variable" href="class_game.html#a764a28e4171f491dcc25a836034f0422">selectedPlayer</a> = <a class="code hl_variable" href="class_game.html#ab531d251551abf240c4351b41fe475b7">currentTurn</a>;</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>            <a class="code hl_function" href="class_game.html#a878101f65c29f936ef8d4e7cee9def2b">generateMoveHighlights</a>(i, <a class="code hl_variable" href="class_game.html#ab531d251551abf240c4351b41fe475b7">currentTurn</a> == 1);</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>            <a class="code hl_variable" href="class_game.html#abc580dfaef74d13ae4171a030294778e">selectedGridIndex</a> = <a class="code hl_function" href="class_game.html#a721aa511e75e3f093c8835ca19b229d2">getGridIndexAtPosition</a>(pieces[i]-&gt;getSprite().getPosition());</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>            <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>        }</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>    }</div>
 <div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span> </div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span><span class="preprocessor">#endif </span><span class="comment">// GAME_INPUT_HPP</span></div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>    <span class="comment">// clicked elsewhere: clear selection</span></div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    <a class="code hl_function" href="class_game.html#af713cd5a826ffd206d110ae0d0cc8e06">clearMoveHighlights</a>();</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>    <a class="code hl_variable" href="class_game.html#af9f869096f97c3f99f93bf14596cfae3">selectedPieceIndex</a> = -1;</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>    <a class="code hl_variable" href="class_game.html#a764a28e4171f491dcc25a836034f0422">selectedPlayer</a> = 0;</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>    <a class="code hl_variable" href="class_game.html#abc580dfaef74d13ae4171a030294778e">selectedGridIndex</a> = -1;</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>}</div>
+</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span> </div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span><span class="preprocessor">#endif </span><span class="comment">// GAME_INPUT_HPP</span></div>
 <div class="ttc" id="a_game_8h_html"><div class="ttname"><a href="_game_8h.html">Game.h</a></div></div>
 <div class="ttc" id="aclass_game_html_a00f9c67b78365873ec0a54b0aa45284f"><div class="ttname"><a href="class_game.html#a00f9c67b78365873ec0a54b0aa45284f">Game::checkGameOver</a></div><div class="ttdeci">void checkGameOver()</div><div class="ttdef"><b>Definition</b> GameRules.hpp:131</div></div>
-<div class="ttc" id="aclass_game_html_a08bfef0a9b244c596a4fff8669f79dee"><div class="ttname"><a href="class_game.html#a08bfef0a9b244c596a4fff8669f79dee">Game::aiMaxDepth</a></div><div class="ttdeci">int aiMaxDepth</div><div class="ttdef"><b>Definition</b> Game.h:174</div></div>
-<div class="ttc" id="aclass_game_html_a110177571664e17fdd6d308b7db8aa6d"><div class="ttname"><a href="class_game.html#a110177571664e17fdd6d308b7db8aa6d">Game::player2Turn</a></div><div class="ttdeci">std::string player2Turn</div><div class="ttdef"><b>Definition</b> Game.h:124</div></div>
-<div class="ttc" id="aclass_game_html_a21f9857b2d4b38b97ec90b9c2ce3413d"><div class="ttname"><a href="class_game.html#a21f9857b2d4b38b97ec90b9c2ce3413d">Game::gameOver</a></div><div class="ttdeci">bool gameOver</div><div class="ttdef"><b>Definition</b> Game.h:175</div></div>
-<div class="ttc" id="aclass_game_html_a223de215aeb661cd423ac145756cc730"><div class="ttname"><a href="class_game.html#a223de215aeb661cd423ac145756cc730">Game::window</a></div><div class="ttdeci">sf::RenderWindow window</div><div class="ttdef"><b>Definition</b> Game.h:119</div></div>
-<div class="ttc" id="aclass_game_html_a2266d2f24a793ac535ea509735a9cff9"><div class="ttname"><a href="class_game.html#a2266d2f24a793ac535ea509735a9cff9">Game::cellSize</a></div><div class="ttdeci">float cellSize</div><div class="ttdef"><b>Definition</b> Game.h:149</div></div>
-<div class="ttc" id="aclass_game_html_a31c912698e95855b8947a528ceb052df"><div class="ttname"><a href="class_game.html#a31c912698e95855b8947a528ceb052df">Game::moveHighlightIndices</a></div><div class="ttdeci">std::vector&lt; int &gt; moveHighlightIndices</div><div class="ttdef"><b>Definition</b> Game.h:165</div></div>
-<div class="ttc" id="aclass_game_html_a54fc90ce168270b0089a832d8904aa23"><div class="ttname"><a href="class_game.html#a54fc90ce168270b0089a832d8904aa23">Game::player1Turn</a></div><div class="ttdeci">std::string player1Turn</div><div class="ttdef"><b>Definition</b> Game.h:123</div></div>
+<div class="ttc" id="aclass_game_html_a08bfef0a9b244c596a4fff8669f79dee"><div class="ttname"><a href="class_game.html#a08bfef0a9b244c596a4fff8669f79dee">Game::aiMaxDepth</a></div><div class="ttdeci">int aiMaxDepth</div><div class="ttdef"><b>Definition</b> Game.h:181</div></div>
+<div class="ttc" id="aclass_game_html_a110177571664e17fdd6d308b7db8aa6d"><div class="ttname"><a href="class_game.html#a110177571664e17fdd6d308b7db8aa6d">Game::player2Turn</a></div><div class="ttdeci">std::string player2Turn</div><div class="ttdef"><b>Definition</b> Game.h:129</div></div>
+<div class="ttc" id="aclass_game_html_a21f9857b2d4b38b97ec90b9c2ce3413d"><div class="ttname"><a href="class_game.html#a21f9857b2d4b38b97ec90b9c2ce3413d">Game::gameOver</a></div><div class="ttdeci">bool gameOver</div><div class="ttdef"><b>Definition</b> Game.h:182</div></div>
+<div class="ttc" id="aclass_game_html_a223de215aeb661cd423ac145756cc730"><div class="ttname"><a href="class_game.html#a223de215aeb661cd423ac145756cc730">Game::window</a></div><div class="ttdeci">sf::RenderWindow window</div><div class="ttdef"><b>Definition</b> Game.h:124</div></div>
+<div class="ttc" id="aclass_game_html_a2266d2f24a793ac535ea509735a9cff9"><div class="ttname"><a href="class_game.html#a2266d2f24a793ac535ea509735a9cff9">Game::cellSize</a></div><div class="ttdeci">float cellSize</div><div class="ttdef"><b>Definition</b> Game.h:154</div></div>
+<div class="ttc" id="aclass_game_html_a31c912698e95855b8947a528ceb052df"><div class="ttname"><a href="class_game.html#a31c912698e95855b8947a528ceb052df">Game::moveHighlightIndices</a></div><div class="ttdeci">std::vector&lt; int &gt; moveHighlightIndices</div><div class="ttdef"><b>Definition</b> Game.h:172</div></div>
+<div class="ttc" id="aclass_game_html_a54fc90ce168270b0089a832d8904aa23"><div class="ttname"><a href="class_game.html#a54fc90ce168270b0089a832d8904aa23">Game::player1Turn</a></div><div class="ttdeci">std::string player1Turn</div><div class="ttdef"><b>Definition</b> Game.h:128</div></div>
 <div class="ttc" id="aclass_game_html_a5af204ccb58ae15556b3dd2bd8692898"><div class="ttname"><a href="class_game.html#a5af204ccb58ae15556b3dd2bd8692898">Game::processMouseClicks</a></div><div class="ttdeci">void processMouseClicks()</div><div class="ttdef"><b>Definition</b> GameInput.hpp:10</div></div>
-<div class="ttc" id="aclass_game_html_a5cd6f01149f1a3b8cca9a09d8530c5cc"><div class="ttname"><a href="class_game.html#a5cd6f01149f1a3b8cca9a09d8530c5cc">Game::moveHighlights</a></div><div class="ttdeci">std::vector&lt; sf::RectangleShape &gt; moveHighlights</div><div class="ttdef"><b>Definition</b> Game.h:164</div></div>
-<div class="ttc" id="aclass_game_html_a5ddabd7d5349868b2f257037909beb21"><div class="ttname"><a href="class_game.html#a5ddabd7d5349868b2f257037909beb21">Game::player2Pieces</a></div><div class="ttdeci">std::vector&lt; std::unique_ptr&lt; Piece &gt; &gt; player2Pieces</div><div class="ttdef"><b>Definition</b> Game.h:154</div></div>
-<div class="ttc" id="aclass_game_html_a65d0e0feb2737d2ad0856b049900b01d"><div class="ttname"><a href="class_game.html#a65d0e0feb2737d2ad0856b049900b01d">Game::updateDifficultyUI</a></div><div class="ttdeci">void updateDifficultyUI()</div><div class="ttdef"><b>Definition</b> Game.cpp:164</div></div>
+<div class="ttc" id="aclass_game_html_a5cd6f01149f1a3b8cca9a09d8530c5cc"><div class="ttname"><a href="class_game.html#a5cd6f01149f1a3b8cca9a09d8530c5cc">Game::moveHighlights</a></div><div class="ttdeci">std::vector&lt; sf::RectangleShape &gt; moveHighlights</div><div class="ttdef"><b>Definition</b> Game.h:171</div></div>
+<div class="ttc" id="aclass_game_html_a5ddabd7d5349868b2f257037909beb21"><div class="ttname"><a href="class_game.html#a5ddabd7d5349868b2f257037909beb21">Game::player2Pieces</a></div><div class="ttdeci">std::vector&lt; std::unique_ptr&lt; Piece &gt; &gt; player2Pieces</div><div class="ttdef"><b>Definition</b> Game.h:159</div></div>
+<div class="ttc" id="aclass_game_html_a65d0e0feb2737d2ad0856b049900b01d"><div class="ttname"><a href="class_game.html#a65d0e0feb2737d2ad0856b049900b01d">Game::updateDifficultyUI</a></div><div class="ttdeci">void updateDifficultyUI()</div><div class="ttdef"><b>Definition</b> Game.cpp:223</div></div>
 <div class="ttc" id="aclass_game_html_a721aa511e75e3f093c8835ca19b229d2"><div class="ttname"><a href="class_game.html#a721aa511e75e3f093c8835ca19b229d2">Game::getGridIndexAtPosition</a></div><div class="ttdeci">int getGridIndexAtPosition(const sf::Vector2f &amp;p)</div><div class="ttdef"><b>Definition</b> GameMovement.hpp:10</div></div>
-<div class="ttc" id="aclass_game_html_a764a28e4171f491dcc25a836034f0422"><div class="ttname"><a href="class_game.html#a764a28e4171f491dcc25a836034f0422">Game::selectedPlayer</a></div><div class="ttdeci">int selectedPlayer</div><div class="ttdef"><b>Definition</b> Game.h:161</div></div>
-<div class="ttc" id="aclass_game_html_a7e6ee41c910f72ac77943576a0e268b9"><div class="ttname"><a href="class_game.html#a7e6ee41c910f72ac77943576a0e268b9">Game::board</a></div><div class="ttdeci">std::vector&lt; Piece * &gt; board</div><div class="ttdef"><b>Definition</b> Game.h:156</div></div>
+<div class="ttc" id="aclass_game_html_a764a28e4171f491dcc25a836034f0422"><div class="ttname"><a href="class_game.html#a764a28e4171f491dcc25a836034f0422">Game::selectedPlayer</a></div><div class="ttdeci">int selectedPlayer</div><div class="ttdef"><b>Definition</b> Game.h:166</div></div>
+<div class="ttc" id="aclass_game_html_a7e6ee41c910f72ac77943576a0e268b9"><div class="ttname"><a href="class_game.html#a7e6ee41c910f72ac77943576a0e268b9">Game::board</a></div><div class="ttdeci">std::vector&lt; Piece * &gt; board</div><div class="ttdef"><b>Definition</b> Game.h:161</div></div>
 <div class="ttc" id="aclass_game_html_a878101f65c29f936ef8d4e7cee9def2b"><div class="ttname"><a href="class_game.html#a878101f65c29f936ef8d4e7cee9def2b">Game::generateMoveHighlights</a></div><div class="ttdeci">void generateMoveHighlights(int index, bool p1)</div><div class="ttdef"><b>Definition</b> GameMovement.hpp:18</div></div>
+<div class="ttc" id="aclass_game_html_a8f396bafcc1b7c1c5ad905cd3c2510a8"><div class="ttname"><a href="class_game.html#a8f396bafcc1b7c1c5ad905cd3c2510a8">Game::selectedPieceContainerIndex</a></div><div class="ttdeci">int selectedPieceContainerIndex</div><div class="ttdef"><b>Definition</b> Game.h:168</div></div>
 <div class="ttc" id="aclass_game_html_a9ede000cb9ef52fb1f00ca0e3c5898b5"><div class="ttname"><a href="class_game.html#a9ede000cb9ef52fb1f00ca0e3c5898b5">Game::handlePlacementClick</a></div><div class="ttdeci">void handlePlacementClick(const sf::Vector2f &amp;p)</div><div class="ttdef"><b>Definition</b> GameInput.hpp:45</div></div>
-<div class="ttc" id="aclass_game_html_aa539bd4c62aa408fe795fd586c9cb6aa"><div class="ttname"><a href="class_game.html#aa539bd4c62aa408fe795fd586c9cb6aa">Game::player1Pieces</a></div><div class="ttdeci">std::vector&lt; std::unique_ptr&lt; Piece &gt; &gt; player1Pieces</div><div class="ttdef"><b>Definition</b> Game.h:153</div></div>
-<div class="ttc" id="aclass_game_html_ab531d251551abf240c4351b41fe475b7"><div class="ttname"><a href="class_game.html#ab531d251551abf240c4351b41fe475b7">Game::currentTurn</a></div><div class="ttdeci">int currentTurn</div><div class="ttdef"><b>Definition</b> Game.h:158</div></div>
-<div class="ttc" id="aclass_game_html_ac1cb755da6760902a1135b592ff051be"><div class="ttname"><a href="class_game.html#ac1cb755da6760902a1135b592ff051be">Game::displayedMessage</a></div><div class="ttdeci">sf::Text displayedMessage</div><div class="ttdef"><b>Definition</b> Game.h:121</div></div>
-<div class="ttc" id="aclass_game_html_acc8fbb5f63107e4750d414ab2891131a"><div class="ttname"><a href="class_game.html#acc8fbb5f63107e4750d414ab2891131a">Game::handleMovementClick</a></div><div class="ttdeci">void handleMovementClick(const sf::Vector2f &amp;p)</div><div class="ttdef"><b>Definition</b> GameInput.hpp:111</div></div>
-<div class="ttc" id="aclass_game_html_af15793ed3c9f85cc7ce7a5fe294241a1"><div class="ttname"><a href="class_game.html#af15793ed3c9f85cc7ce7a5fe294241a1">Game::grid</a></div><div class="ttdeci">std::vector&lt; sf::RectangleShape &gt; grid</div><div class="ttdef"><b>Definition</b> Game.h:126</div></div>
-<div class="ttc" id="aclass_game_html_af3649899da7b40f630c8694e4aadd532"><div class="ttname"><a href="class_game.html#af3649899da7b40f630c8694e4aadd532">Game::placementPhase</a></div><div class="ttdeci">bool placementPhase</div><div class="ttdef"><b>Definition</b> Game.h:159</div></div>
-<div class="ttc" id="aclass_game_html_af5c6911f1423d164a3c3fe5d02b8246e"><div class="ttname"><a href="class_game.html#af5c6911f1423d164a3c3fe5d02b8246e">Game::difficultyBoxes</a></div><div class="ttdeci">sf::RectangleShape difficultyBoxes[3]</div><div class="ttdef"><b>Definition</b> Game.h:168</div></div>
+<div class="ttc" id="aclass_game_html_aa539bd4c62aa408fe795fd586c9cb6aa"><div class="ttname"><a href="class_game.html#aa539bd4c62aa408fe795fd586c9cb6aa">Game::player1Pieces</a></div><div class="ttdeci">std::vector&lt; std::unique_ptr&lt; Piece &gt; &gt; player1Pieces</div><div class="ttdef"><b>Definition</b> Game.h:158</div></div>
+<div class="ttc" id="aclass_game_html_ab531d251551abf240c4351b41fe475b7"><div class="ttname"><a href="class_game.html#ab531d251551abf240c4351b41fe475b7">Game::currentTurn</a></div><div class="ttdeci">int currentTurn</div><div class="ttdef"><b>Definition</b> Game.h:163</div></div>
+<div class="ttc" id="aclass_game_html_abc580dfaef74d13ae4171a030294778e"><div class="ttname"><a href="class_game.html#abc580dfaef74d13ae4171a030294778e">Game::selectedGridIndex</a></div><div class="ttdeci">int selectedGridIndex</div><div class="ttdef"><b>Definition</b> Game.h:169</div></div>
+<div class="ttc" id="aclass_game_html_ac1cb755da6760902a1135b592ff051be"><div class="ttname"><a href="class_game.html#ac1cb755da6760902a1135b592ff051be">Game::displayedMessage</a></div><div class="ttdeci">sf::Text displayedMessage</div><div class="ttdef"><b>Definition</b> Game.h:126</div></div>
+<div class="ttc" id="aclass_game_html_acc8fbb5f63107e4750d414ab2891131a"><div class="ttname"><a href="class_game.html#acc8fbb5f63107e4750d414ab2891131a">Game::handleMovementClick</a></div><div class="ttdeci">void handleMovementClick(const sf::Vector2f &amp;p)</div><div class="ttdef"><b>Definition</b> GameInput.hpp:114</div></div>
+<div class="ttc" id="aclass_game_html_af15793ed3c9f85cc7ce7a5fe294241a1"><div class="ttname"><a href="class_game.html#af15793ed3c9f85cc7ce7a5fe294241a1">Game::grid</a></div><div class="ttdeci">std::vector&lt; sf::RectangleShape &gt; grid</div><div class="ttdef"><b>Definition</b> Game.h:131</div></div>
+<div class="ttc" id="aclass_game_html_af3649899da7b40f630c8694e4aadd532"><div class="ttname"><a href="class_game.html#af3649899da7b40f630c8694e4aadd532">Game::placementPhase</a></div><div class="ttdeci">bool placementPhase</div><div class="ttdef"><b>Definition</b> Game.h:164</div></div>
+<div class="ttc" id="aclass_game_html_af5c6911f1423d164a3c3fe5d02b8246e"><div class="ttname"><a href="class_game.html#af5c6911f1423d164a3c3fe5d02b8246e">Game::difficultyBoxes</a></div><div class="ttdeci">sf::RectangleShape difficultyBoxes[3]</div><div class="ttdef"><b>Definition</b> Game.h:175</div></div>
 <div class="ttc" id="aclass_game_html_af713cd5a826ffd206d110ae0d0cc8e06"><div class="ttname"><a href="class_game.html#af713cd5a826ffd206d110ae0d0cc8e06">Game::clearMoveHighlights</a></div><div class="ttdeci">void clearMoveHighlights()</div><div class="ttdef"><b>Definition</b> GameMovement.hpp:74</div></div>
-<div class="ttc" id="aclass_game_html_af9f869096f97c3f99f93bf14596cfae3"><div class="ttname"><a href="class_game.html#af9f869096f97c3f99f93bf14596cfae3">Game::selectedPieceIndex</a></div><div class="ttdeci">int selectedPieceIndex</div><div class="ttdef"><b>Definition</b> Game.h:162</div></div>
+<div class="ttc" id="aclass_game_html_af9f869096f97c3f99f93bf14596cfae3"><div class="ttname"><a href="class_game.html#af9f869096f97c3f99f93bf14596cfae3">Game::selectedPieceIndex</a></div><div class="ttdeci">int selectedPieceIndex</div><div class="ttdef"><b>Definition</b> Game.h:167</div></div>
 <div class="ttc" id="aclass_piece_html"><div class="ttname"><a href="class_piece.html">Piece</a></div><div class="ttdef"><b>Definition</b> Game.h:19</div></div>
 <div class="ttc" id="aclass_piece_html_a8d619c36c9f25646d3820a2920fea254"><div class="ttname"><a href="class_piece.html#a8d619c36c9f25646d3820a2920fea254">Piece::getSprite</a></div><div class="ttdeci">sf::Sprite &amp; getSprite()</div><div class="ttdef"><b>Definition</b> Game.h:27</div></div>
 <div class="ttc" id="aclass_piece_html_a972930b5102a86f7d6eefe51b53f2783"><div class="ttname"><a href="class_piece.html#a972930b5102a86f7d6eefe51b53f2783">Piece::setPlaced</a></div><div class="ttdeci">void setPlaced(bool p)</div><div class="ttdef"><b>Definition</b> Game.h:31</div></div>

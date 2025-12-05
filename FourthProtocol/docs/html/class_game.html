@@ -110,6 +110,7 @@ Private Member Functions</h2></td></tr>
 <tr class="memitem:a513afdca4557c577bcaec7557b5ad12e" id="r_a513afdca4557c577bcaec7557b5ad12e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a513afdca4557c577bcaec7557b5ad12e">update</a> (sf::Time dt)</td></tr>
 <tr class="memitem:a15ddd769261d923827a3cdf41499c843" id="r_a15ddd769261d923827a3cdf41499c843"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a15ddd769261d923827a3cdf41499c843">render</a> ()</td></tr>
 <tr class="memitem:a65d0e0feb2737d2ad0856b049900b01d" id="r_a65d0e0feb2737d2ad0856b049900b01d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a65d0e0feb2737d2ad0856b049900b01d">updateDifficultyUI</a> ()</td></tr>
+<tr class="memitem:a77e637782b6832ae60e73fddbba31ec9" id="r_a77e637782b6832ae60e73fddbba31ec9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a77e637782b6832ae60e73fddbba31ec9">updateContainerUI</a> ()</td></tr>
 <tr class="memitem:a5af204ccb58ae15556b3dd2bd8692898" id="r_a5af204ccb58ae15556b3dd2bd8692898"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5af204ccb58ae15556b3dd2bd8692898">processMouseClicks</a> ()</td></tr>
 <tr class="memitem:a9ede000cb9ef52fb1f00ca0e3c5898b5" id="r_a9ede000cb9ef52fb1f00ca0e3c5898b5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9ede000cb9ef52fb1f00ca0e3c5898b5">handlePlacementClick</a> (const sf::Vector2f &amp;p)</td></tr>
 <tr class="memitem:acc8fbb5f63107e4750d414ab2891131a" id="r_acc8fbb5f63107e4750d414ab2891131a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acc8fbb5f63107e4750d414ab2891131a">handleMovementClick</a> (const sf::Vector2f &amp;p)</td></tr>
@@ -126,11 +127,13 @@ Private Member Functions</h2></td></tr>
 <tr class="memitem:a1dda8c9eb93c4f9d21d6d391972b6dae" id="r_a1dda8c9eb93c4f9d21d6d391972b6dae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1dda8c9eb93c4f9d21d6d391972b6dae">aiPlacePiece</a> ()</td></tr>
 <tr class="memitem:a53a5d425eddbe33b3c8ed478e225a3d1" id="r_a53a5d425eddbe33b3c8ed478e225a3d1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a53a5d425eddbe33b3c8ed478e225a3d1">aiMakeMove</a> ()</td></tr>
 <tr class="memitem:a6d0b33eeb650c72df4b89640f3268591" id="r_a6d0b33eeb650c72df4b89640f3268591"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6d0b33eeb650c72df4b89640f3268591">minimax</a> (int depth, int maxDepth, bool maximizingPlayer, int <a class="el" href="#a17924bfeeecacce48a7fe95a3fb48233">aiPlayer</a>, int alpha, int beta)</td></tr>
+<tr class="memitem:a3396ebd4ff59235f851e3aa2eda110e3" id="r_a3396ebd4ff59235f851e3aa2eda110e3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3396ebd4ff59235f851e3aa2eda110e3">minimaxPlacement</a> (int depth, int maxDepth, bool maximizingPlayer, int <a class="el" href="#a17924bfeeecacce48a7fe95a3fb48233">aiPlayer</a>)</td></tr>
 <tr class="memitem:a75214000ba0a446811af882b5c84fc69" id="r_a75214000ba0a446811af882b5c84fc69"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a75214000ba0a446811af882b5c84fc69">evaluateBoard</a> (int <a class="el" href="#a17924bfeeecacce48a7fe95a3fb48233">aiPlayer</a>) const</td></tr>
 <tr class="memitem:a57825d0e120395b2df2e5c6dc97080f6" id="r_a57825d0e120395b2df2e5c6dc97080f6"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a57825d0e120395b2df2e5c6dc97080f6">evaluateLine</a> (int a, int b, int c, int d, int <a class="el" href="#a17924bfeeecacce48a7fe95a3fb48233">aiPlayer</a>) const</td></tr>
 <tr class="memitem:aa3a6544f976ec3f926e5de877e8686db" id="r_aa3a6544f976ec3f926e5de877e8686db"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa3a6544f976ec3f926e5de877e8686db">checkWinner</a> () const</td></tr>
 <tr class="memitem:aa7c17e23b2a57c0ce8fc685d29f842f2" id="r_aa7c17e23b2a57c0ce8fc685d29f842f2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa7c17e23b2a57c0ce8fc685d29f842f2">isBoardFull</a> () const</td></tr>
 <tr class="memitem:a00f9c67b78365873ec0a54b0aa45284f" id="r_a00f9c67b78365873ec0a54b0aa45284f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a00f9c67b78365873ec0a54b0aa45284f">checkGameOver</a> ()</td></tr>
+<tr class="memitem:a47c726a80fd133c0a4f6b8fba56d8832" id="r_a47c726a80fd133c0a4f6b8fba56d8832"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a47c726a80fd133c0a4f6b8fba56d8832">resetGame</a> ()</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pri-attribs" class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -157,6 +160,8 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:af3649899da7b40f630c8694e4aadd532" id="r_af3649899da7b40f630c8694e4aadd532"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af3649899da7b40f630c8694e4aadd532">placementPhase</a></td></tr>
 <tr class="memitem:a764a28e4171f491dcc25a836034f0422" id="r_a764a28e4171f491dcc25a836034f0422"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a764a28e4171f491dcc25a836034f0422">selectedPlayer</a></td></tr>
 <tr class="memitem:af9f869096f97c3f99f93bf14596cfae3" id="r_af9f869096f97c3f99f93bf14596cfae3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af9f869096f97c3f99f93bf14596cfae3">selectedPieceIndex</a></td></tr>
+<tr class="memitem:a8f396bafcc1b7c1c5ad905cd3c2510a8" id="r_a8f396bafcc1b7c1c5ad905cd3c2510a8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8f396bafcc1b7c1c5ad905cd3c2510a8">selectedPieceContainerIndex</a> = -1</td></tr>
+<tr class="memitem:abc580dfaef74d13ae4171a030294778e" id="r_abc580dfaef74d13ae4171a030294778e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abc580dfaef74d13ae4171a030294778e">selectedGridIndex</a> = -1</td></tr>
 <tr class="memitem:a5cd6f01149f1a3b8cca9a09d8530c5cc" id="r_a5cd6f01149f1a3b8cca9a09d8530c5cc"><td class="memItemLeft" align="right" valign="top">std::vector&lt; sf::RectangleShape &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5cd6f01149f1a3b8cca9a09d8530c5cc">moveHighlights</a></td></tr>
 <tr class="memitem:a31c912698e95855b8947a528ceb052df" id="r_a31c912698e95855b8947a528ceb052df"><td class="memItemLeft" align="right" valign="top">std::vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a31c912698e95855b8947a528ceb052df">moveHighlightIndices</a></td></tr>
 <tr class="memitem:a20cd089cade903b3a05e29e90ab3d2c8" id="r_a20cd089cade903b3a05e29e90ab3d2c8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a20cd089cade903b3a05e29e90ab3d2c8">containerCols</a></td></tr>
@@ -785,6 +790,45 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a3396ebd4ff59235f851e3aa2eda110e3" name="a3396ebd4ff59235f851e3aa2eda110e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3396ebd4ff59235f851e3aa2eda110e3">&#9670;&#160;</a></span>minimaxPlacement()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Game::minimaxPlacement </td>
+          <td>(</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>depth</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>maxDepth</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>maximizingPlayer</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>aiPlayer</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a79f698dda206dd7a9bed28b3f88bdc38" name="a79f698dda206dd7a9bed28b3f88bdc38"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a79f698dda206dd7a9bed28b3f88bdc38">&#9670;&#160;</a></span>processEvents()</h2>
 
@@ -885,6 +929,31 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a47c726a80fd133c0a4f6b8fba56d8832" name="a47c726a80fd133c0a4f6b8fba56d8832"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a47c726a80fd133c0a4f6b8fba56d8832">&#9670;&#160;</a></span>resetGame()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Game::resetGame </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a1ab78f5ed0d5ea879157357cf2fb2afa" name="a1ab78f5ed0d5ea879157357cf2fb2afa"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1ab78f5ed0d5ea879157357cf2fb2afa">&#9670;&#160;</a></span>run()</h2>
 
@@ -967,6 +1036,31 @@ Private Attributes</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">void Game::updateAI </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a77e637782b6832ae60e73fddbba31ec9" name="a77e637782b6832ae60e73fddbba31ec9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a77e637782b6832ae60e73fddbba31ec9">&#9670;&#160;</a></span>updateContainerUI()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Game::updateContainerUI </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -1668,6 +1762,50 @@ Private Attributes</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">float Game::scale</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="abc580dfaef74d13ae4171a030294778e" name="abc580dfaef74d13ae4171a030294778e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc580dfaef74d13ae4171a030294778e">&#9670;&#160;</a></span>selectedGridIndex</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Game::selectedGridIndex = -1</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8f396bafcc1b7c1c5ad905cd3c2510a8" name="a8f396bafcc1b7c1c5ad905cd3c2510a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f396bafcc1b7c1c5ad905cd3c2510a8">&#9670;&#160;</a></span>selectedPieceContainerIndex</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Game::selectedPieceContainerIndex = -1</td>
         </tr>
       </table>
   </td>

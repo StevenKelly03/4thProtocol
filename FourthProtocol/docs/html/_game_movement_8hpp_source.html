@@ -199,126 +199,123 @@ $(function(){initNavTree('_game_movement_8hpp_source.html','',''); });
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    <span class="keywordtype">int</span> dx = tc - fc;</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <span class="keywordtype">int</span> dy = tr - fr;</div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    <span class="keywordtype">bool</span> straight = (dx == 0 || dy == 0);</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    <span class="keywordtype">bool</span> diagonal = (std::abs(dx) == std::abs(dy));</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    <span class="keywordflow">if</span> (!straight &amp;&amp; !diagonal)</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    <span class="comment">// Must be exactly 2 spaces away in one of the 8 directions</span></div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    <span class="keywordflow">if</span> (std::abs(dx) &gt; 2 || std::abs(dy) &gt; 2)</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    <span class="keywordflow">if</span> (std::max(std::abs(dx), std::abs(dy)) != 2)</div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    <span class="keywordtype">int</span> sx = (dx &gt; 0 ? 1 : dx &lt; 0 ? -1 : 0);</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    <span class="keywordtype">int</span> sy = (dy &gt; 0 ? 1 : dy &lt; 0 ? -1 : 0);</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    <span class="keywordtype">int</span> x = fc + sx;</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    <span class="keywordtype">int</span> y = fr + sy;</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    <span class="keywordflow">if</span> (std::min(std::abs(dx), std::abs(dy)) &gt; 2)</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <span class="comment">// Calculate the index of the square being jumped over</span></div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    <span class="keywordtype">int</span> sx = (dx &gt; 0 ? 1 : dx &lt; 0 ? -1 : 0);</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    <span class="keywordtype">int</span> sy = (dy &gt; 0 ? 1 : dy &lt; 0 ? -1 : 0);</div>
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    <span class="keywordtype">bool</span> jumped = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    <span class="keywordflow">while</span> (x != tc || y != tr)</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    {</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>        <span class="keywordtype">int</span> idx = y * <a class="code hl_variable" href="class_game.html#a346318306af444a166d0b4017505aae4">gridCols</a> + x;</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="class_game.html#a7e6ee41c910f72ac77943576a0e268b9">board</a>[idx] != <span class="keyword">nullptr</span>)</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>            jumped = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>        x += sx;</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>        y += sy;</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    }</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    <span class="keywordtype">int</span> jumped_x = fc + sx;</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    <span class="keywordtype">int</span> jumped_y = fr + sy;</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    <span class="keywordtype">int</span> jumpedIdx = jumped_y * <a class="code hl_variable" href="class_game.html#a346318306af444a166d0b4017505aae4">gridCols</a> + jumped_x;</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    <span class="comment">// The jumped square must contain a piece</span></div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="class_game.html#a7e6ee41c910f72ac77943576a0e268b9">board</a>[jumpedIdx] == <span class="keyword">nullptr</span>)</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>}</div>
+</div>
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> </div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    <span class="keywordflow">return</span> jumped;</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>}</div>
+<div class="foldopen" id="foldopen00123" data-start="{" data-end="}">
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno"><a class="line" href="class_game.html#ab593b486c82bca199a5c047f8aaa3cf0">  123</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_game.html#ab593b486c82bca199a5c047f8aaa3cf0">Game::generateAllMoves</a>(<span class="keywordtype">int</span> player, std::vector&lt;Move&gt;&amp; moves)<span class="keyword"> const</span></div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    moves.clear();</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span> </div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> from = 0; from &lt; 25; ++from)</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    {</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>        <a class="code hl_class" href="class_piece.html">Piece</a>* piece = <a class="code hl_variable" href="class_game.html#a7e6ee41c910f72ac77943576a0e268b9">board</a>[from];</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>        <span class="keywordflow">if</span> (!piece) <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>        <span class="keywordflow">if</span> (piece-&gt;<a class="code hl_function" href="class_piece.html#adf88e64d5480021c7c90e648689bee62">getOwner</a>() != player) <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span> </div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>        <span class="keywordtype">int</span> fr = from / <a class="code hl_variable" href="class_game.html#a346318306af444a166d0b4017505aae4">gridCols</a>;</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>        <span class="keywordtype">int</span> fc = from % <a class="code hl_variable" href="class_game.html#a346318306af444a166d0b4017505aae4">gridCols</a>;</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>        sf::Vector2i fromPos(fc, fr);</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span> </div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> to = 0; to &lt; 25; ++to)</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>        {</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>            <span class="keywordflow">if</span> (<a class="code hl_variable" href="class_game.html#a7e6ee41c910f72ac77943576a0e268b9">board</a>[to] != <span class="keyword">nullptr</span>)</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>                <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span> </div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>            <span class="keywordtype">int</span> tr = to / <a class="code hl_variable" href="class_game.html#a346318306af444a166d0b4017505aae4">gridCols</a>;</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>            <span class="keywordtype">int</span> tc = to % <a class="code hl_variable" href="class_game.html#a346318306af444a166d0b4017505aae4">gridCols</a>;</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>            sf::Vector2i toPos(tc, tr);</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span> </div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>            <span class="keywordtype">bool</span> valid = piece-&gt;<a class="code hl_function" href="class_piece.html#adc97b975c998b1965a9279b7b11822b7">canMove</a>(fromPos, toPos);</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>            <span class="keywordflow">if</span> (!valid &amp;&amp; piece-&gt;<a class="code hl_function" href="class_piece.html#a4469f5486b661ba035bac706fe7366e4">getType</a>() == <a class="code hl_enumvalue" href="_game_8h.html#a12ed9719bbdf7bc596ff7a6f4bf3f021a239243b6cfcaef84a6d7004f21b7af6f">PieceType::Frog</a>)</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>            {</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>                <span class="keywordflow">if</span> (<a class="code hl_function" href="class_game.html#a5c33b63ca183086a884ff390a87654c9">canFrogJumpBoard</a>(from, to))</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>                    valid = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>            }</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span> </div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>            <span class="keywordflow">if</span> (valid)</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>            {</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>                moves.push_back({ from, to });</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>            }</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>        }</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>    }</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>}</div>
 </div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> </div>
-<div class="foldopen" id="foldopen00126" data-start="{" data-end="}">
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno"><a class="line" href="class_game.html#ab593b486c82bca199a5c047f8aaa3cf0">  126</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_game.html#ab593b486c82bca199a5c047f8aaa3cf0">Game::generateAllMoves</a>(<span class="keywordtype">int</span> player, std::vector&lt;Move&gt;&amp; moves)<span class="keyword"> const</span></div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    moves.clear();</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span> </div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> from = 0; from &lt; 25; ++from)</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    {</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>        <a class="code hl_class" href="class_piece.html">Piece</a>* piece = <a class="code hl_variable" href="class_game.html#a7e6ee41c910f72ac77943576a0e268b9">board</a>[from];</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>        <span class="keywordflow">if</span> (!piece) <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>        <span class="keywordflow">if</span> (piece-&gt;<a class="code hl_function" href="class_piece.html#adf88e64d5480021c7c90e648689bee62">getOwner</a>() != player) <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span> </div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>        <span class="keywordtype">int</span> fr = from / <a class="code hl_variable" href="class_game.html#a346318306af444a166d0b4017505aae4">gridCols</a>;</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>        <span class="keywordtype">int</span> fc = from % <a class="code hl_variable" href="class_game.html#a346318306af444a166d0b4017505aae4">gridCols</a>;</div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>        sf::Vector2i fromPos(fc, fr);</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span> </div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> to = 0; to &lt; 25; ++to)</div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>        {</div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>            <span class="keywordflow">if</span> (<a class="code hl_variable" href="class_game.html#a7e6ee41c910f72ac77943576a0e268b9">board</a>[to] != <span class="keyword">nullptr</span>)</div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>                <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span> </div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>            <span class="keywordtype">int</span> tr = to / <a class="code hl_variable" href="class_game.html#a346318306af444a166d0b4017505aae4">gridCols</a>;</div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>            <span class="keywordtype">int</span> tc = to % <a class="code hl_variable" href="class_game.html#a346318306af444a166d0b4017505aae4">gridCols</a>;</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>            sf::Vector2i toPos(tc, tr);</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span> </div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>            <span class="keywordtype">bool</span> valid = piece-&gt;<a class="code hl_function" href="class_piece.html#adc97b975c998b1965a9279b7b11822b7">canMove</a>(fromPos, toPos);</div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>            <span class="keywordflow">if</span> (!valid &amp;&amp; piece-&gt;<a class="code hl_function" href="class_piece.html#a4469f5486b661ba035bac706fe7366e4">getType</a>() == <a class="code hl_enumvalue" href="_game_8h.html#a12ed9719bbdf7bc596ff7a6f4bf3f021a239243b6cfcaef84a6d7004f21b7af6f">PieceType::Frog</a>)</div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>            {</div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>                <span class="keywordflow">if</span> (<a class="code hl_function" href="class_game.html#a5c33b63ca183086a884ff390a87654c9">canFrogJumpBoard</a>(from, to))</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>                    valid = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>            }</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span> </div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>            <span class="keywordflow">if</span> (valid)</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>            {</div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>                moves.push_back({ from, to });</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>            }</div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>        }</div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>    }</div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>}</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span> </div>
+<div class="foldopen" id="foldopen00161" data-start="{" data-end="}">
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno"><a class="line" href="class_game.html#ae6ffdf6a7d3255fe3ef297cfe29c40d4">  161</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_game.html#ae6ffdf6a7d3255fe3ef297cfe29c40d4">Game::applyMoveToBoardOnly</a>(<span class="keywordtype">int</span> from, <span class="keywordtype">int</span> to)</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>{</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>    <a class="code hl_variable" href="class_game.html#a7e6ee41c910f72ac77943576a0e268b9">board</a>[to] = <a class="code hl_variable" href="class_game.html#a7e6ee41c910f72ac77943576a0e268b9">board</a>[from];</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>    <a class="code hl_variable" href="class_game.html#a7e6ee41c910f72ac77943576a0e268b9">board</a>[from] = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>}</div>
 </div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span> </div>
-<div class="foldopen" id="foldopen00164" data-start="{" data-end="}">
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno"><a class="line" href="class_game.html#ae6ffdf6a7d3255fe3ef297cfe29c40d4">  164</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_game.html#ae6ffdf6a7d3255fe3ef297cfe29c40d4">Game::applyMoveToBoardOnly</a>(<span class="keywordtype">int</span> from, <span class="keywordtype">int</span> to)</div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>{</div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>    <a class="code hl_variable" href="class_game.html#a7e6ee41c910f72ac77943576a0e268b9">board</a>[to] = <a class="code hl_variable" href="class_game.html#a7e6ee41c910f72ac77943576a0e268b9">board</a>[from];</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>    <a class="code hl_variable" href="class_game.html#a7e6ee41c910f72ac77943576a0e268b9">board</a>[from] = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>}</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span> </div>
+<div class="foldopen" id="foldopen00167" data-start="{" data-end="}">
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno"><a class="line" href="class_game.html#aec59fc531ecb5e1028bc7d7e8ba4e382">  167</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_game.html#aec59fc531ecb5e1028bc7d7e8ba4e382">Game::undoMoveOnBoardOnly</a>(<span class="keywordtype">int</span> from, <span class="keywordtype">int</span> to)</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>{</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>    <a class="code hl_variable" href="class_game.html#a7e6ee41c910f72ac77943576a0e268b9">board</a>[from] = <a class="code hl_variable" href="class_game.html#a7e6ee41c910f72ac77943576a0e268b9">board</a>[to];</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>    <a class="code hl_variable" href="class_game.html#a7e6ee41c910f72ac77943576a0e268b9">board</a>[to] = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>}</div>
 </div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span> </div>
-<div class="foldopen" id="foldopen00170" data-start="{" data-end="}">
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno"><a class="line" href="class_game.html#aec59fc531ecb5e1028bc7d7e8ba4e382">  170</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_game.html#aec59fc531ecb5e1028bc7d7e8ba4e382">Game::undoMoveOnBoardOnly</a>(<span class="keywordtype">int</span> from, <span class="keywordtype">int</span> to)</div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>{</div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>    <a class="code hl_variable" href="class_game.html#a7e6ee41c910f72ac77943576a0e268b9">board</a>[from] = <a class="code hl_variable" href="class_game.html#a7e6ee41c910f72ac77943576a0e268b9">board</a>[to];</div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>    <a class="code hl_variable" href="class_game.html#a7e6ee41c910f72ac77943576a0e268b9">board</a>[to] = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>}</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span> </div>
+<div class="foldopen" id="foldopen00173" data-start="{" data-end="}">
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno"><a class="line" href="class_game.html#ac23e731683695676ead4be450834d769">  173</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_game.html#ac23e731683695676ead4be450834d769">Game::applyMoveToGame</a>(<span class="keywordtype">int</span> from, <span class="keywordtype">int</span> to)</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>{</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>    <a class="code hl_class" href="class_piece.html">Piece</a>* piece = <a class="code hl_variable" href="class_game.html#a7e6ee41c910f72ac77943576a0e268b9">board</a>[from];</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>    <span class="keywordflow">if</span> (!piece)</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>        <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span> </div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>    sf::Vector2f cellPos = <a class="code hl_variable" href="class_game.html#af15793ed3c9f85cc7ce7a5fe294241a1">grid</a>[to].getPosition();</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    piece-&gt;<a class="code hl_function" href="class_piece.html#a8d619c36c9f25646d3820a2920fea254">getSprite</a>().setPosition(</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>        { cellPos.x + <a class="code hl_variable" href="class_game.html#a2266d2f24a793ac535ea509735a9cff9">cellSize</a> / 2.f,</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>         cellPos.y + <a class="code hl_variable" href="class_game.html#a2266d2f24a793ac535ea509735a9cff9">cellSize</a> / 2.f });</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span> </div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>    <a class="code hl_variable" href="class_game.html#a7e6ee41c910f72ac77943576a0e268b9">board</a>[to] = piece;</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    <a class="code hl_variable" href="class_game.html#a7e6ee41c910f72ac77943576a0e268b9">board</a>[from] = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>}</div>
 </div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span> </div>
-<div class="foldopen" id="foldopen00176" data-start="{" data-end="}">
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno"><a class="line" href="class_game.html#ac23e731683695676ead4be450834d769">  176</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_game.html#ac23e731683695676ead4be450834d769">Game::applyMoveToGame</a>(<span class="keywordtype">int</span> from, <span class="keywordtype">int</span> to)</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>{</div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>    <a class="code hl_class" href="class_piece.html">Piece</a>* piece = <a class="code hl_variable" href="class_game.html#a7e6ee41c910f72ac77943576a0e268b9">board</a>[from];</div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>    <span class="keywordflow">if</span> (!piece)</div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>        <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span> </div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>    sf::Vector2f cellPos = <a class="code hl_variable" href="class_game.html#af15793ed3c9f85cc7ce7a5fe294241a1">grid</a>[to].getPosition();</div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>    piece-&gt;<a class="code hl_function" href="class_piece.html#a8d619c36c9f25646d3820a2920fea254">getSprite</a>().setPosition(</div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>        { cellPos.x + <a class="code hl_variable" href="class_game.html#a2266d2f24a793ac535ea509735a9cff9">cellSize</a> / 2.f,</div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>         cellPos.y + <a class="code hl_variable" href="class_game.html#a2266d2f24a793ac535ea509735a9cff9">cellSize</a> / 2.f });</div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span> </div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    <a class="code hl_variable" href="class_game.html#a7e6ee41c910f72ac77943576a0e268b9">board</a>[to] = piece;</div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>    <a class="code hl_variable" href="class_game.html#a7e6ee41c910f72ac77943576a0e268b9">board</a>[from] = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>}</div>
-</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span> </div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span><span class="preprocessor">#endif </span><span class="comment">// GAME_MOVEMENT_HPP</span></div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span> </div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span><span class="preprocessor">#endif </span><span class="comment">// GAME_MOVEMENT_HPP</span></div>
 <div class="ttc" id="a_game_8h_html"><div class="ttname"><a href="_game_8h.html">Game.h</a></div></div>
 <div class="ttc" id="a_game_8h_html_a12ed9719bbdf7bc596ff7a6f4bf3f021a239243b6cfcaef84a6d7004f21b7af6f"><div class="ttname"><a href="_game_8h.html#a12ed9719bbdf7bc596ff7a6f4bf3f021a239243b6cfcaef84a6d7004f21b7af6f">PieceType::Frog</a></div><div class="ttdeci">@ Frog</div><div class="ttdef"><b>Definition</b> Game.h:13</div></div>
-<div class="ttc" id="aclass_game_html_a2266d2f24a793ac535ea509735a9cff9"><div class="ttname"><a href="class_game.html#a2266d2f24a793ac535ea509735a9cff9">Game::cellSize</a></div><div class="ttdeci">float cellSize</div><div class="ttdef"><b>Definition</b> Game.h:149</div></div>
-<div class="ttc" id="aclass_game_html_a31c912698e95855b8947a528ceb052df"><div class="ttname"><a href="class_game.html#a31c912698e95855b8947a528ceb052df">Game::moveHighlightIndices</a></div><div class="ttdeci">std::vector&lt; int &gt; moveHighlightIndices</div><div class="ttdef"><b>Definition</b> Game.h:165</div></div>
-<div class="ttc" id="aclass_game_html_a346318306af444a166d0b4017505aae4"><div class="ttname"><a href="class_game.html#a346318306af444a166d0b4017505aae4">Game::gridCols</a></div><div class="ttdeci">int gridCols</div><div class="ttdef"><b>Definition</b> Game.h:151</div></div>
+<div class="ttc" id="aclass_game_html_a2266d2f24a793ac535ea509735a9cff9"><div class="ttname"><a href="class_game.html#a2266d2f24a793ac535ea509735a9cff9">Game::cellSize</a></div><div class="ttdeci">float cellSize</div><div class="ttdef"><b>Definition</b> Game.h:154</div></div>
+<div class="ttc" id="aclass_game_html_a31c912698e95855b8947a528ceb052df"><div class="ttname"><a href="class_game.html#a31c912698e95855b8947a528ceb052df">Game::moveHighlightIndices</a></div><div class="ttdeci">std::vector&lt; int &gt; moveHighlightIndices</div><div class="ttdef"><b>Definition</b> Game.h:172</div></div>
+<div class="ttc" id="aclass_game_html_a346318306af444a166d0b4017505aae4"><div class="ttname"><a href="class_game.html#a346318306af444a166d0b4017505aae4">Game::gridCols</a></div><div class="ttdeci">int gridCols</div><div class="ttdef"><b>Definition</b> Game.h:156</div></div>
 <div class="ttc" id="aclass_game_html_a5c33b63ca183086a884ff390a87654c9"><div class="ttname"><a href="class_game.html#a5c33b63ca183086a884ff390a87654c9">Game::canFrogJumpBoard</a></div><div class="ttdeci">bool canFrogJumpBoard(int fromIdx, int toIdx) const</div><div class="ttdef"><b>Definition</b> GameMovement.hpp:84</div></div>
-<div class="ttc" id="aclass_game_html_a5cd6f01149f1a3b8cca9a09d8530c5cc"><div class="ttname"><a href="class_game.html#a5cd6f01149f1a3b8cca9a09d8530c5cc">Game::moveHighlights</a></div><div class="ttdeci">std::vector&lt; sf::RectangleShape &gt; moveHighlights</div><div class="ttdef"><b>Definition</b> Game.h:164</div></div>
-<div class="ttc" id="aclass_game_html_a5ddabd7d5349868b2f257037909beb21"><div class="ttname"><a href="class_game.html#a5ddabd7d5349868b2f257037909beb21">Game::player2Pieces</a></div><div class="ttdeci">std::vector&lt; std::unique_ptr&lt; Piece &gt; &gt; player2Pieces</div><div class="ttdef"><b>Definition</b> Game.h:154</div></div>
+<div class="ttc" id="aclass_game_html_a5cd6f01149f1a3b8cca9a09d8530c5cc"><div class="ttname"><a href="class_game.html#a5cd6f01149f1a3b8cca9a09d8530c5cc">Game::moveHighlights</a></div><div class="ttdeci">std::vector&lt; sf::RectangleShape &gt; moveHighlights</div><div class="ttdef"><b>Definition</b> Game.h:171</div></div>
+<div class="ttc" id="aclass_game_html_a5ddabd7d5349868b2f257037909beb21"><div class="ttname"><a href="class_game.html#a5ddabd7d5349868b2f257037909beb21">Game::player2Pieces</a></div><div class="ttdeci">std::vector&lt; std::unique_ptr&lt; Piece &gt; &gt; player2Pieces</div><div class="ttdef"><b>Definition</b> Game.h:159</div></div>
 <div class="ttc" id="aclass_game_html_a721aa511e75e3f093c8835ca19b229d2"><div class="ttname"><a href="class_game.html#a721aa511e75e3f093c8835ca19b229d2">Game::getGridIndexAtPosition</a></div><div class="ttdeci">int getGridIndexAtPosition(const sf::Vector2f &amp;p)</div><div class="ttdef"><b>Definition</b> GameMovement.hpp:10</div></div>
-<div class="ttc" id="aclass_game_html_a7e6ee41c910f72ac77943576a0e268b9"><div class="ttname"><a href="class_game.html#a7e6ee41c910f72ac77943576a0e268b9">Game::board</a></div><div class="ttdeci">std::vector&lt; Piece * &gt; board</div><div class="ttdef"><b>Definition</b> Game.h:156</div></div>
+<div class="ttc" id="aclass_game_html_a7e6ee41c910f72ac77943576a0e268b9"><div class="ttname"><a href="class_game.html#a7e6ee41c910f72ac77943576a0e268b9">Game::board</a></div><div class="ttdeci">std::vector&lt; Piece * &gt; board</div><div class="ttdef"><b>Definition</b> Game.h:161</div></div>
 <div class="ttc" id="aclass_game_html_a878101f65c29f936ef8d4e7cee9def2b"><div class="ttname"><a href="class_game.html#a878101f65c29f936ef8d4e7cee9def2b">Game::generateMoveHighlights</a></div><div class="ttdeci">void generateMoveHighlights(int index, bool p1)</div><div class="ttdef"><b>Definition</b> GameMovement.hpp:18</div></div>
-<div class="ttc" id="aclass_game_html_aa539bd4c62aa408fe795fd586c9cb6aa"><div class="ttname"><a href="class_game.html#aa539bd4c62aa408fe795fd586c9cb6aa">Game::player1Pieces</a></div><div class="ttdeci">std::vector&lt; std::unique_ptr&lt; Piece &gt; &gt; player1Pieces</div><div class="ttdef"><b>Definition</b> Game.h:153</div></div>
-<div class="ttc" id="aclass_game_html_ab593b486c82bca199a5c047f8aaa3cf0"><div class="ttname"><a href="class_game.html#ab593b486c82bca199a5c047f8aaa3cf0">Game::generateAllMoves</a></div><div class="ttdeci">void generateAllMoves(int player, std::vector&lt; Move &gt; &amp;moves) const</div><div class="ttdef"><b>Definition</b> GameMovement.hpp:126</div></div>
-<div class="ttc" id="aclass_game_html_ac23e731683695676ead4be450834d769"><div class="ttname"><a href="class_game.html#ac23e731683695676ead4be450834d769">Game::applyMoveToGame</a></div><div class="ttdeci">void applyMoveToGame(int from, int to)</div><div class="ttdef"><b>Definition</b> GameMovement.hpp:176</div></div>
+<div class="ttc" id="aclass_game_html_aa539bd4c62aa408fe795fd586c9cb6aa"><div class="ttname"><a href="class_game.html#aa539bd4c62aa408fe795fd586c9cb6aa">Game::player1Pieces</a></div><div class="ttdeci">std::vector&lt; std::unique_ptr&lt; Piece &gt; &gt; player1Pieces</div><div class="ttdef"><b>Definition</b> Game.h:158</div></div>
+<div class="ttc" id="aclass_game_html_ab593b486c82bca199a5c047f8aaa3cf0"><div class="ttname"><a href="class_game.html#ab593b486c82bca199a5c047f8aaa3cf0">Game::generateAllMoves</a></div><div class="ttdeci">void generateAllMoves(int player, std::vector&lt; Move &gt; &amp;moves) const</div><div class="ttdef"><b>Definition</b> GameMovement.hpp:123</div></div>
+<div class="ttc" id="aclass_game_html_ac23e731683695676ead4be450834d769"><div class="ttname"><a href="class_game.html#ac23e731683695676ead4be450834d769">Game::applyMoveToGame</a></div><div class="ttdeci">void applyMoveToGame(int from, int to)</div><div class="ttdef"><b>Definition</b> GameMovement.hpp:173</div></div>
 <div class="ttc" id="aclass_game_html_ae49d4644e7a55634b04bc90071a00e8c"><div class="ttname"><a href="class_game.html#ae49d4644e7a55634b04bc90071a00e8c">Game::frogJump</a></div><div class="ttdeci">bool frogJump(int index, bool p1, const sf::Vector2f &amp;dest)</div><div class="ttdef"><b>Definition</b> GameMovement.hpp:60</div></div>
-<div class="ttc" id="aclass_game_html_ae6ffdf6a7d3255fe3ef297cfe29c40d4"><div class="ttname"><a href="class_game.html#ae6ffdf6a7d3255fe3ef297cfe29c40d4">Game::applyMoveToBoardOnly</a></div><div class="ttdeci">void applyMoveToBoardOnly(int from, int to)</div><div class="ttdef"><b>Definition</b> GameMovement.hpp:164</div></div>
-<div class="ttc" id="aclass_game_html_aec59fc531ecb5e1028bc7d7e8ba4e382"><div class="ttname"><a href="class_game.html#aec59fc531ecb5e1028bc7d7e8ba4e382">Game::undoMoveOnBoardOnly</a></div><div class="ttdeci">void undoMoveOnBoardOnly(int from, int to)</div><div class="ttdef"><b>Definition</b> GameMovement.hpp:170</div></div>
-<div class="ttc" id="aclass_game_html_af15793ed3c9f85cc7ce7a5fe294241a1"><div class="ttname"><a href="class_game.html#af15793ed3c9f85cc7ce7a5fe294241a1">Game::grid</a></div><div class="ttdeci">std::vector&lt; sf::RectangleShape &gt; grid</div><div class="ttdef"><b>Definition</b> Game.h:126</div></div>
+<div class="ttc" id="aclass_game_html_ae6ffdf6a7d3255fe3ef297cfe29c40d4"><div class="ttname"><a href="class_game.html#ae6ffdf6a7d3255fe3ef297cfe29c40d4">Game::applyMoveToBoardOnly</a></div><div class="ttdeci">void applyMoveToBoardOnly(int from, int to)</div><div class="ttdef"><b>Definition</b> GameMovement.hpp:161</div></div>
+<div class="ttc" id="aclass_game_html_aec59fc531ecb5e1028bc7d7e8ba4e382"><div class="ttname"><a href="class_game.html#aec59fc531ecb5e1028bc7d7e8ba4e382">Game::undoMoveOnBoardOnly</a></div><div class="ttdeci">void undoMoveOnBoardOnly(int from, int to)</div><div class="ttdef"><b>Definition</b> GameMovement.hpp:167</div></div>
+<div class="ttc" id="aclass_game_html_af15793ed3c9f85cc7ce7a5fe294241a1"><div class="ttname"><a href="class_game.html#af15793ed3c9f85cc7ce7a5fe294241a1">Game::grid</a></div><div class="ttdeci">std::vector&lt; sf::RectangleShape &gt; grid</div><div class="ttdef"><b>Definition</b> Game.h:131</div></div>
 <div class="ttc" id="aclass_game_html_af713cd5a826ffd206d110ae0d0cc8e06"><div class="ttname"><a href="class_game.html#af713cd5a826ffd206d110ae0d0cc8e06">Game::clearMoveHighlights</a></div><div class="ttdeci">void clearMoveHighlights()</div><div class="ttdef"><b>Definition</b> GameMovement.hpp:74</div></div>
 <div class="ttc" id="aclass_piece_html"><div class="ttname"><a href="class_piece.html">Piece</a></div><div class="ttdef"><b>Definition</b> Game.h:19</div></div>
 <div class="ttc" id="aclass_piece_html_a4469f5486b661ba035bac706fe7366e4"><div class="ttname"><a href="class_piece.html#a4469f5486b661ba035bac706fe7366e4">Piece::getType</a></div><div class="ttdeci">PieceType getType() const</div><div class="ttdef"><b>Definition</b> Game.h:34</div></div>
