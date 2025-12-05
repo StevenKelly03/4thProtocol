@@ -31,7 +31,6 @@ void Game::aiPlacePiece()
 {
     auto& pieces = (aiPlayer == 1 ? player1Pieces : player2Pieces);
 
-    // pick first unplaced piece (as before)
     int pieceIndex = -1;
     for (int i = 0; i < static_cast<int>(pieces.size()); ++i)
     {
@@ -46,25 +45,20 @@ void Game::aiPlacePiece()
 
     Piece* piece = pieces[pieceIndex].get();
 
-    // --- Minimax over all empty squares for this piece ---
     int bestScore = -1000000;
     int bestDest = -1;
-
-    // small depth is usually enough for placement
-    int placementDepth = 2;
+    int placementDepth = aiMaxDepth;
 
     for (int i = 0; i < static_cast<int>(board.size()); ++i)
     {
         if (board[i] != nullptr)
             continue;
 
-        // simulate placing this piece on square i
         board[i] = piece;
         pieces[pieceIndex]->setPlaced(true);
 
         int score = minimaxPlacement(1, placementDepth, false, aiPlayer);
 
-        // undo simulation
         board[i] = nullptr;
         pieces[pieceIndex]->setPlaced(false);
 
@@ -75,7 +69,6 @@ void Game::aiPlacePiece()
         }
     }
 
-    // fallback: if for some reason bestDest is invalid, just pick first empty
     if (bestDest == -1)
     {
         for (int i = 0; i < static_cast<int>(board.size()); ++i)
@@ -90,7 +83,6 @@ void Game::aiPlacePiece()
     if (bestDest == -1)
         return;
 
-    // --- Commit the chosen placement on the real board / sprites ---
     sf::Vector2f cellPos = grid[bestDest].getPosition();
     piece->getSprite().setPosition(
         { cellPos.x + cellSize / 2.f,
@@ -113,7 +105,6 @@ void Game::aiPlacePiece()
     currentTurn = (currentTurn == 1 ? 2 : 1);
     displayedMessage.setString(currentTurn == 1 ? player1Turn : player2Turn);
 }
-
 
 // ------------------------------------------------------------
 // AI movement with minimax
@@ -377,7 +368,6 @@ int Game::minimaxPlacement(int depth, int maxDepth, bool maximizingPlayer, int a
 
     int currentPlayer = maximizingPlayer ? aiPlayer : (aiPlayer == 1 ? 2 : 1);
 
-    // Find first unplaced piece for the current player
     auto& pieces = (currentPlayer == 1 ? player1Pieces : player2Pieces);
     int pieceIndex = -1;
     for (int i = 0; i < static_cast<int>(pieces.size()); ++i)
@@ -389,8 +379,6 @@ int Game::minimaxPlacement(int depth, int maxDepth, bool maximizingPlayer, int a
         }
     }
 
-    // If this player has no unplaced pieces, either we are done,
-    // or we just skip to the other player.
     if (pieceIndex == -1)
     {
         auto& otherPieces = (currentPlayer == 1 ? player2Pieces : player1Pieces);
@@ -404,11 +392,9 @@ int Game::minimaxPlacement(int depth, int maxDepth, bool maximizingPlayer, int a
             }
         }
 
-        // no pieces left for either side -> evaluate position
         if (!otherHasUnplaced)
             return evaluateBoard(aiPlayer);
 
-        // otherwise, let the other player place
         return minimaxPlacement(depth, maxDepth, !maximizingPlayer, aiPlayer);
     }
 
@@ -423,13 +409,11 @@ int Game::minimaxPlacement(int depth, int maxDepth, bool maximizingPlayer, int a
             if (board[i] != nullptr)
                 continue;
 
-            // simulate placing
             board[i] = piece;
             pieces[pieceIndex]->setPlaced(true);
 
-            int val = minimaxPlacement(depth + 1, maxDepth, !maximizingPlayer, aiPlayer);
+            int val = minimaxPlacement(depth + 1, maxDepth, false, aiPlayer);
 
-            // undo
             board[i] = nullptr;
             pieces[pieceIndex]->setPlaced(false);
 
@@ -448,13 +432,11 @@ int Game::minimaxPlacement(int depth, int maxDepth, bool maximizingPlayer, int a
             if (board[i] != nullptr)
                 continue;
 
-            // simulate placing
             board[i] = piece;
             pieces[pieceIndex]->setPlaced(true);
 
-            int val = minimaxPlacement(depth + 1, maxDepth, !maximizingPlayer, aiPlayer);
+            int val = minimaxPlacement(depth + 1, maxDepth, true, aiPlayer);
 
-            // undo
             board[i] = nullptr;
             pieces[pieceIndex]->setPlaced(false);
 
@@ -465,7 +447,5 @@ int Game::minimaxPlacement(int depth, int maxDepth, bool maximizingPlayer, int a
         return best;
     }
 }
-
-
 
 #endif // GAME_AI_HPP
